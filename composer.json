@@ -1,0 +1,17 @@
+{
+    "name": "admin/magento-ecommerce",
+    "authors": [
+        {
+            "name": "Your Name",
+            "email": "tamndph41864@fpt.edu.vnvn"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Libs\\": "Libs/",
+            "App\\": "app/",
+            "Middlewares\\": "middlewares/"
+        }
+    }
+}
