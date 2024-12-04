@@ -13,6 +13,7 @@ use App\Controllers\Admin\BrandController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\PermissionController;
 use App\Controllers\Admin\ProductCatalogueController;
+use App\Controllers\Admin\ProductController;
 use App\Controllers\Admin\ProfileController;
 use App\Controllers\Admin\UserCatalogueController;
 use App\Controllers\Admin\UserController;
@@ -115,7 +116,12 @@ Route::put("/admin/attribute/value/{id}/edit", [AttributeController::class, 'upd
 Route::destroy("/admin/attribute/value/{id}", [AttributeController::class, 'deleteValue'], ['auth', 'admin']);
 
 // Product
-// Route::get("/admin/product", [])
+Route::get("/admin/product", [ProductController::class, 'index'], ['auth', 'admin']);
+Route::get("/admin/product/create", [ProductController::class, 'create'], ['auth', 'admin']);
+Route::post("/admin/product/create", [ProductController::class, 'store'], ['auth', 'admin']);
+Route::get("/admin/product/{id}/edit", [ProductController::class, 'edit'], ['auth', 'admin']);
+Route::put("/admin/product/{id}/edit", [ProductController::class, 'update'], ['auth', 'admin']);
+
 
 
 

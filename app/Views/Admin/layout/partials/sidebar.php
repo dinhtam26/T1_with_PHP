@@ -30,7 +30,7 @@
                     <li><a class="nav-link" href="<?= ROOT_URL ?>admin/brand">Thương hiệu</a></li>
                     <li><a class="nav-link" href="<?= ROOT_URL ?>admin/productCatalogue">Danh mục</a></li>
                     <li><a class="nav-link" href="<?= ROOT_URL ?>admin/attribute">Thuộc tính</a></li>
-                    <li><a class="nav-link" href="<?= ROOT_URL ?>admin/attribute">Sản phẩm</a></li>
+                    <li><a class="nav-link" href="<?= ROOT_URL ?>admin/product">Sản phẩm</a></li>
 
                 </ul>
             </li>

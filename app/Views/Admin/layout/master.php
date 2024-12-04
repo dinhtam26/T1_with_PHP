@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/summernote/summernote-bs4.css">
     <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/owlcarousel2/dist/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/owlcarousel2/dist/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/jquery-selectric/selectric.css">
+
 
 
 
@@ -109,6 +112,8 @@
     <script src="<?= ADMIN_URL ?>assets/modules/owlcarousel2/dist/owl.carousel.min.js"></script>
     <script src="<?= ADMIN_URL ?>assets/modules/summernote/summernote-bs4.js"></script>
     <script src="<?= ADMIN_URL ?>assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+    <script src="<?= ADMIN_URL ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
+    <script src="<?= ADMIN_URL ?>assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
 
 
     <script src="<?= ADMIN_URL ?>assets/js/page/modules-ion-icons.js"></script>
