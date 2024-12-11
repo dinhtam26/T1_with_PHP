@@ -1,13 +1,13 @@
 <section class="section" style="height:1500px">
     <div class="section-header">
-        <h1>Create Product</h1>
+        <h1>Tạo mới sản phẩm</h1>
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Create Product</h2>
+        <h2 class="section-title">Tạo mới sản phẩm</h2>
         <p class="section-lead">We provide advanced input fields, such as date picker, color picker, and so on.</p>
 
-        <form action="" method="post">
+        <form id="uploadForm" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-12 col-md-9 col-lg-9">
                     <div class="card">
@@ -16,14 +16,14 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control">
+                                <label>Tiêu đề sản phẩm</label>
+                                <input type="text" class="form-control" name="name" placeholder="Tiêu đề sản phẩm">
                             </div>
 
                             <div class="form-group ">
-                                <label class="">Description</label>
+                                <label class="">Mô tả sản phẩm</label>
                                 <div class="">
-                                    <textarea class="summernote" style="display: none;"></textarea>
+                                    <textarea class="summernote" style="display: none;" name="description"></textarea>
                                     <div class="note-editor note-frame card">
                                     </div>
                                 </div>
@@ -31,14 +31,30 @@
                         </div>
                     </div>
 
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Ảnh album sản phẩm</h4>
+                        </div>
+                        <div class="card-body">
+                            <div style=" display: flex;flex-direction: column;margin-bottom: 20px;" class="form-group">
+                                <label for="album">Ảnh sản phẩm</label>
+                                <input type="file" id="album" name="album[]" multiple style="display: block; width: 100%;max-width: 400px;padding: 10px;font-size: 14px;border: 1px solid #ccc;border-radius: 4px;background-color: #f9f9f9;color: #555;cursor: pointer;" />
+                            </div>
+
+                            <div class="d-flex g-2" id="preview-area">
+                                <!-- <h3>Selected Images:</h3> -->
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div class="card-header d-flex ">
-
-                            <h4 class=""> Product data</h4>
-
-                            <select style="width: 300px;" class="form-control" name="user_catalogue_id">
-                                <option value="">Simple product</option>
-                                <option value="">Variant product</option>
+                            <h4 class="">Dữ liệu sản phẩm</h4>
+                            <select style="width: 300px;" class="form-control" name="type">
+                                <option value="simple">Sản phẩm đơn giản</option>
+                                <option value="variant">Sản phẩm biến thể</option>
                             </select>
 
                         </div>
@@ -48,7 +64,7 @@
                                 <div class="col-12 col-sm-12 col-md-3">
                                     <ul class="nav nav-pills flex-column" id="myTab4" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link  active show" id="home-tab4" data-toggle="tab" href="#home4" role="tab" aria-controls="home" aria-selected="false">Chung</a>
+                                            <a class="nav-link active show" id="home-tab4" data-toggle="tab" href="#home4" role="tab" aria-controls="home" aria-selected="false">Chung</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="profile-tab4" data-toggle="tab" href="#profile4" role="tab" aria-controls="profile" aria-selected="false">Hàng tồn kho</a>
@@ -62,7 +78,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" id="product_variants-tab4" data-toggle="tab" href="#product_variants4" role="tab" aria-controls="product_variants" aria-selected="true">Sản phẩm biến thể</a>
+                                            <a class="nav-link" style="display:none" id="product_variants-tab4" data-toggle="tab" href="#product_variants4" role="tab" aria-controls="product_variants" aria-selected="true">Sản phẩm biến thể</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -76,21 +92,21 @@
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="">Giá bán</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="price">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label for="">Giá so sánh</label>
-                                                        <input type="text" class="form-control" placeholder="Nhập giá so sánh với giá vốn">
+                                                        <label for="">Giá sale</label>
+                                                        <input type="text" class="form-control" placeholder="Nhập giá so sánh với giá vốn" name="sale_price">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="">Giá vốn</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="cost_price">
                                                     </div>
                                                 </div>
                                             </div>
@@ -101,21 +117,21 @@
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="">Sku</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="sku">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="">Số lượng</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="stock">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="">Ngưỡng tồn kho thấp</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="low_stock_amount">
                                                     </div>
                                                 </div>
                                             </div>
@@ -126,7 +142,7 @@
 
                                             <div class="d-flex justify-content-around align-items-center">
                                                 <label for="">Cân nặng (g)</label>
-                                                <input style="width: 520px" type="text" class="form-control">
+                                                <input style="width: 520px" type="text" class="form-control" name="weight">
                                             </div>
 
                                             <div class="d-flex justify-content-around align-items-center mt-5">
@@ -135,17 +151,17 @@
                                                     <div class="row">
                                                         <div class="col-4">
                                                             <div class="form-group">
-                                                                <input type="text" class="form-control" placeholder="Length">
+                                                                <input type="text" class="form-control" placeholder="Length" name="length">
                                                             </div>
                                                         </div>
                                                         <div class="col-4">
                                                             <div class="form-group">
-                                                                <input type="text" class="form-control" placeholder="Width">
+                                                                <input type="text" class="form-control" placeholder="Width" name="width">
                                                             </div>
                                                         </div>
                                                         <div class="col-4">
                                                             <div class="form-group">
-                                                                <input type="text" class="form-control" placeholder="Height">
+                                                                <input type="text" class="form-control" placeholder="Height" name="height">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -154,7 +170,7 @@
 
                                             <div class="form-group">
                                                 <label style="margin-right: 15px">Shipping class</label>
-                                                <select style="width: 520px;" class="form-control select2" multiple="" tabindex="1" aria-hidden="false" aria-placeholder="Chosse class shipping">
+                                                <select name="shipping_ids[]" style="width: 520px;" class="form-control select2" multiple="" tabindex="1" aria-hidden="false" aria-placeholder="Chosse class shipping">
                                                     <option>Option 1</option>
                                                 </select>
                                             </div>
@@ -164,38 +180,28 @@
                                         <!-- Thuộc tính -->
                                         <div class="tab-pane fade" id="attribute4" role="tabpanel" aria-labelledby="attribute-tab4">
                                             <p>Chọn thuộc tính</p>
-
-
                                             <div class="form-group">
-                                                <label>Thuộc tính</label>
-                                                <select style="width: 250px;" class="form-control select2 " tabindex="-1" aria-hidden="true">
-                                                    <option>Option 1</option>
-                                                    <option>Option 2</option>
-                                                    <option>Option 3</option>
+                                                <label style="margin-right: 15px; color: red">Thuộc tính</label>
+                                                <select style="width: 520px;" name="attribute" class="form-control select2 attribute_select" multiple="" tabindex="1" aria-hidden="false" aria-placeholder="Chosse class shipping">
+                                                    <?php
+                                                    if (!empty($attributeList)) {
+                                                        foreach ($attributeList as $attribute) {
+                                                    ?>
+                                                            <option value="<?= $attribute->id ?>"><?= $attribute->name ?></option>
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?>
                                                 </select>
                                             </div>
-
-                                            <div class="form-group">
-                                                <label style="margin-right: 15px">Option 1</label>
-                                                <select style="width: 520px;" class="form-control select2" multiple="" tabindex="1" aria-hidden="false" aria-placeholder="Chosse class shipping">
-                                                    <!-- <option value="" disabled selected>Chọn một tùy chọn</option> -->
-                                                    <option>Option 2</option>
-                                                    <option>Option 3</option>
-                                                    <option>Option 4</option>
-                                                    <option>Option 5</option>
-                                                    <option>Option 6</option>
-                                                    <option>Option 7</option>
-                                                    <option>Option 8</option>
-                                                    <option>Option 9</option>
-                                                </select>
-                                            </div>
+                                            <p>Chọn giá trị cho thuộc tính</p>
+                                            <div id="attribute_values"></div>
+                                            <span style="cursor: no-drop; display:none" class="btn btn-secondary save_attribute">Lưu thuộc tính</span>
                                         </div>
-
-                                        <!-- Thuộc tính -->
+                                        <!-- Product Variant -->
                                         <div class="tab-pane fade" id="product_variants4" role="tabpanel" aria-labelledby="product_variants-tab4">
-
+                                            <a href="#">Tạo sản phẩm biến thể</a>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -205,32 +211,60 @@
                 <div class="col-12 col-md-3 col-lg-3">
                     <div class="card">
                         <div class="card-header">
+                            <div class="form-group">
+                                <label for="album">Ảnh sản phẩm</label>
+                                <input type="file" name="image" id="image" />
+                            </div>
                         </div>
                         <div class="card-body">
-                            <div class="form-group dropzone dz-clickable" id="mydropzone">
-                                <label for="">Ablum</label>
-                                <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
+                            <div id="image-preview-area">
+                                <!-- <h3>Selected Images:</h3> -->
                             </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                        </div>
+                        <div class="card-body">
+
                             <div class="form-group">
                                 <label>Thương hiệu</label>
-                                <select class="form-control select2 " tabindex="-1" aria-hidden="true">
-                                    <option>Option 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
+                                <select name="brand_id" class="form-control select2 " tabindex="-1" aria-hidden="true">
+                                    <option value="">Chọn thương hiệu</option>
+                                    <?php
+                                    if (!empty($brandList)) {
+                                        foreach ($brandList as $brand) {
+                                    ?>
+                                            <option value="<?= $brand->id ?>"><?= $brand->name ?></option>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label>Loại sản phẩm</label>
-                                <select class="form-control select2 " tabindex="-1" aria-hidden="true">
-                                    <option>Option 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
+                                <select name="product_catalogue_id" class="form-control select2 " tabindex="-1" aria-hidden="true">
+                                    <option value="">Chọn loại sản phẩm</option>
+                                    <?php
+                                    if (!empty($productCatalogueList)) {
+                                        foreach ($productCatalogueList as $productCatalogue) {
+                                            # code... 
+                                    ?>
+                                            <option value="<?= $productCatalogue->id ?>"><?= $productCatalogue->name ?></option>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-submit" type="submit">Create</button>
             </div>
         </form>
     </div>

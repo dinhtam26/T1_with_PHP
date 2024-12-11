@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
 
-
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
     <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/dropzonejs/dropzone.css">
 
@@ -145,7 +145,7 @@
 
     <script src="<?= $this->js ?? "hahaha" ?>"></script>
 
-
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
     <script>
         toastr.options = {
@@ -282,6 +282,10 @@
                     }
                 });
             })
+        });
+        // Dropzone has been added as a global variable.
+        const dropzone = new Dropzone("form.my-dropzone", {
+            url: "/file/post"
         });
     </script>
 </body>
