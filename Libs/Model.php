@@ -176,4 +176,19 @@ class Model
         $stmt->execute([$model->primaryKey => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function beginTransaction()
+    {
+        $this->conn->beginTransaction();
+    }
+
+    public function commit()
+    {
+        $this->conn->commit();
+    }
+
+    public function rollBack()
+    {
+        $this->conn->rollBack();
+    }
 }

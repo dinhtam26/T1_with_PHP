@@ -9,6 +9,9 @@ $(document).ready(function () {
             $("#product_variants-tab4").css({
                 display: "block",
             });
+            $("#product_variants4").css({
+                display: "block",
+            });
         } else {
             $("#product_variants-tab4").css({
                 display: "none",
@@ -39,19 +42,18 @@ $(document).ready(function () {
                 data: { loadAttributeID: attributeID },
                 dataType: "json",
                 success: function (response) {
-                    // console.log(response);
-
                     let html = "";
                     $.each(response.attribute, function (key, value) {
                         let xhtml = `
                                         <label class="colorinput">
-                                            <input  type="checkbox" name="enable_variant" class="colorinput-input" id="${key}">
+                                            <input  type="checkbox" name="enable_variant[${key}]"  class="colorinput-input" id="${key}">
                                             <span class="colorinput-color bg-primary"></span>
+                                            
                                         </label>
                                     `;
                         html += `<div class="form-group d-flex justify-content-between align-items-center">
                                     <label style="width:100px" for="">${value.attribute_name}</label>
-                                    <select style="width: 520px;" name="attribute_value[${key}]" id="attribute_value_select" class="form-control select2 attribute_value_select" 
+                                    <select style="width: 520px;" data-name="${value.attribute_name}" name="attribute_value[${key}]" id="attribute_value_select-${key}" class="form-control select2 attribute_value_select" 
                                         multiple="" tabindex="1" aria-hidden="false" 
                                         aria-placeholder="Choose class shipping">`;
 
@@ -78,18 +80,6 @@ $(document).ready(function () {
                             $(this).val(selectedValues[attributeName]).trigger("change");
                         }
                     });
-
-                    if ($("select[name='type']").val() === "variant") {
-                        let checkboxContainer = $(".col-auto");
-                        if (checkboxContainer.find("input[name='enable_variant']").length === 0) {
-                            checkboxContainer.append(`
-                                <label class="colorinput">
-                                    <input type="checkbox" value="1" name="enable_variant" class="colorinput-input">
-                                    <span class="colorinput-color bg-primary"></span>
-                                </label>
-                            `);
-                        }
-                    }
                 },
                 error: function (xhr, status, error) {
                     console.error("Error:", error);
@@ -105,7 +95,9 @@ $(document).ready(function () {
 
     // Sự kiện change cho các giá trị thuộc tính
     $(document).on("change", ".attribute_value_select", function () {
+        let attribute = $("select[name='attribute']").val();
         let attributeValue = $(this).val();
+        console.log(attributeValue);
 
         if (attributeValue.length > 0) {
             $(".save_attribute").css({
@@ -128,12 +120,12 @@ $(document).ready(function () {
 
         $.each(attribute, function (key, value) {
             let enableVariant = $(`input[id=${value}]`).is(":checked");
-
             // Kiểm tra xem input enable_variant được chọn chưa
 
             let selectedValues = $(`select[name='attribute_value[${value}]']`).val(); // Lấy các giá trị được chọn
-
+            let selectedName = $(`select[name='attribute_value[${value}]']`).data("name");
             attribute_value[value] = attribute_value[value] || {};
+            attribute_value[value]["name"] = selectedName;
             attribute_value[value]["values"] = selectedValues || [];
             attribute_value[value]["enable_variant"] = enableVariant;
         });
@@ -142,16 +134,139 @@ $(document).ready(function () {
             type: "GET",
             url: url,
             data: { attribute: attribute, attribute_value: attribute_value },
-            // dataType: "dataType",
+            dataType: "json",
             success: function (response) {
                 console.log(response);
+
+                if (response.attribute_values.attribute_variant != "") {
+                    toastr.success("Lưu thuộc tính thành công");
+                    $("#generateProductVariant").removeAttr("style");
+                    $("#generateProductVariant").on("click", function () {
+                        // console.log(response.attribute_values.attribute_variant);
+                        let variants = generateProductVariant(response.attribute_values.attribute_variant);
+                        let xhtml = "";
+                        $.each(variants, function (key, value) {
+                            let price = $("input[name='price']").val();
+                            let priceSale = $("input[name='sale_price']").val();
+                            let priceCost = $("input[name='cost_price']").val();
+                            let stock = $("input[name='stock']").val();
+                            let stock_low_amount = $("input[name='low_stock_amount']").val();
+
+                            xhtml += `  <div class="d-flex align-items-center" style="    background: #5d62f10d; margin-top:15px; padding: 0px 16px">
+                                            <div class="accordion" style="margin: 0px;">
+                                                <div class="collapsed d-flex justify-content-between align-items-center" role="button" data-toggle="collapse" data-target="#panel-body-${key}" aria-expanded="false" style="background: #5d62f10d padding:0px; margin-top: 8px;margin-right: 50px; ">
+                                                    <p>${value}</p>
+                                                    <div>
+                                                        <span>Số lượng: </span>
+                                                        <p>Giá sản phẩm:</p>
+                                                    </div>
+                                                </div>
+                                                <div  style="border-top: 1px solid #ccc"></div>
+                                                <div class="accordion-body collapse" id="panel-body-${key}" data-parent="#accordion">
+                                                    <div class="form-group">
+                                                        <label>Hình ảnh</label>
+                                                        <input type="file" class="form-control image_variant" name="image_variant[]" />
+                                                    </div>
+                                                    <div class="image-variant-preview-area"></div>
+
+                                                    <div class="form-group">
+                                                        <label>Hình ảnh</label>
+                                                        <input class="form-control album_variant" name="album_variant[]" multiple  type="file" data-id=${key} />
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <div class="form-group">
+                                                                <label for="">Giá bán</label>
+                                                                <input type="text" class="form-control" name="price[]" value=${price}>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <div class="form-group">
+                                                                <label for="">Giá sale</label>
+                                                                <input type="text" class="form-control" placeholder="Nhập giá so sánh với giá vốn" name="sale_price[]" value="${priceSale}">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <div class="form-group">
+                                                                <label for="">Giá vốn</label>
+                                                                <input type="text" class="form-control" name="cost_price[]" value="${priceCost}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <div class="form-group">
+                                                                <label for="">Sku</label>
+                                                                <input type="text" class="form-control" name="sku[]">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <div class="form-group">
+                                                                <label for="">Số lượng</label>
+                                                                <input type="text" class="form-control" name="stock[]" value="${stock}">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <div class="form-group">
+                                                                <label for="">Số lượng ngưỡng</label>
+                                                                <input type="text" class="form-control" name="low_stock_amount[]" value"${stock_low_amount}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div >
+                                                <a class="btn btn-outline-danger delete_item" href="product/">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>`;
+                        });
+                        $("#accordion").html(xhtml);
+                    });
+                }
             },
         });
     });
 
-    // Kiểu sản phẩm
+    function generateProductVariant(attributes) {
+        let keys = Object.keys(attributes); // Lấy danh sách ID thuộc tính
+        let result = []; // Mảng để lưu các biến thể
 
-    // alert();
+        function combine(index, current) {
+            // Nếu đã kết hợp hết các thuộc tính
+            if (index === keys.length) {
+                result.push(current.trim()); // Thêm biến thể vào danh sách
+                return;
+            }
+
+            let key = keys[index]; // Lấy ID thuộc tính hiện tại
+            let attribute = attributes[key]; // Lấy thông tin thuộc tính
+
+            // Lặp qua từng giá trị của thuộc tính
+            attribute.values.forEach((value) => {
+                combine(index + 1, `${current} ${value} -`);
+            });
+        }
+
+        combine(0, ""); // Bắt đầu từ thuộc tính đầu tiên
+        return result.map((item) => item.slice(0, -2)); // Loại bỏ dấu "-" cuối cùng
+    }
+
+    $("input[name='price']").on("change", function () {
+        let stock = $(this).val();
+        $("input[name='price[]']").each(function () {
+            $(this).val(stock);
+        });
+    });
 
     function handleFileInput(inputElement, previewArea, allowMultiple = true) {
         const selectedFiles = [];
@@ -239,7 +354,10 @@ $(document).ready(function () {
             .find("input, select, textarea")
             .not('input[type="file"]')
             .each(function () {
-                formData.append($(this).attr("name"), $(this).val());
+                // formData.append($(this).attr("name"), $(this).val());
+                const name = $(this).attr("name");
+                const value = $(this).is(":checkbox") ? ($(this).is(":checked") ? 1 : 0) : $(this).val();
+                formData.append(name, value);
             });
 
         // Append các file từ albumFiles vào FormData
@@ -252,6 +370,28 @@ $(document).ready(function () {
             formData.append("image", imageFiles[0]); // Chỉ lấy file đầu tiên
         }
 
+        // Append các file từ albumFiles vào FormData
+
+        $(".image_variant").each(function () {
+            const files = $(this)[0].files; // Get the files for this input
+            if (files.length > 0) {
+                formData.append("image_variant[]", files[0]); // Only append the first file
+            }
+        });
+
+        $(".album_variant").each(function () {
+            const files = $(this)[0].files; // Lấy danh sách file của input hiện tại
+            const id = $(this).data("id");
+            console.log(id);
+
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    // Gửi file kèm ID
+                    formData.append(`album_variant[${id}][]`, files[i]);
+                }
+            }
+        });
+
         // Gửi dữ liệu qua AJAX
         $.ajax({
             url: $(this).attr("action"), // URL được lấy từ thuộc tính action của form
@@ -260,11 +400,14 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                console.log(response); // Xử lý phản hồi từ server
-                alert("Upload thành công!");
+                console.log(response);
+
+                setTimeout(function () {
+                    window.location.href = "http://localhost/magento-ecommerce/admin/product";
+                }, 2500);
+                toastr.success("Create Product Successfully");
             },
             error: function (xhr) {
-                alert("Lỗi khi upload ảnh!");
                 console.error(xhr.responseText);
             },
         });

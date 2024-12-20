@@ -26,6 +26,6 @@ class PermissionController extends Controller
         }
 
         $listPermission = $this->permissionUserCatalogueModel->table("permission_user_catalogue")->select('permission_id')->where('user_catalogue_id', '=', 1)->get();
-        dd($listPermission);
+        // dd($listPermission);
     }
 }

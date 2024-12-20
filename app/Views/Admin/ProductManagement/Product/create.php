@@ -11,9 +11,6 @@
             <div class="row">
                 <div class="col-12 col-md-9 col-lg-9">
                     <div class="card">
-                        <div class="card-header">
-
-                        </div>
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Tiêu đề sản phẩm</label>
@@ -24,14 +21,11 @@
                                 <label class="">Mô tả sản phẩm</label>
                                 <div class="">
                                     <textarea class="summernote" style="display: none;" name="description"></textarea>
-                                    <div class="note-editor note-frame card">
-                                    </div>
+                                    <div class="note-editor note-frame card"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
 
                     <div class="card">
                         <div class="card-header">
@@ -56,7 +50,6 @@
                                 <option value="simple">Sản phẩm đơn giản</option>
                                 <option value="variant">Sản phẩm biến thể</option>
                             </select>
-
                         </div>
 
                         <div class="card-body">
@@ -200,13 +193,16 @@
                                         </div>
                                         <!-- Product Variant -->
                                         <div class="tab-pane fade" id="product_variants4" role="tabpanel" aria-labelledby="product_variants-tab4">
-                                            <a href="#">Tạo sản phẩm biến thể</a>
+                                            <span style="pointer-events: none; cursor: not-allowed; color: gray; text-decoration: none; background:#e3dcdc;" class="btn" id="generateProductVariant">Tạo sản phẩm biến thể</span>
+                                            <div id="accordion">
+                                              
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                 </div>
                 <div class="col-12 col-md-3 col-lg-3">
                     <div class="card">
@@ -263,9 +259,23 @@
                     </div>
                 </div>
             </div>
+               
+            </div>
+
+
+
+
+
+
+
+
             <div class="form-group">
                 <button class="btn btn-primary btn-submit" type="submit">Create</button>
             </div>
         </form>
     </div>
+
+
+   
+  
 </section>

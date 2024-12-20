@@ -75,6 +75,17 @@ trait QueryBuilder
         return $this;
     }
 
+    /** where InIn */
+    public function InWhere($field, $compare, $value)
+    {
+        if (!empty($this->where)) {
+            $this->where[] = " AND `$field` $compare $value";
+        } else {
+            $this->where[] = " WHERE `$field` $compare $value";
+        }
+        return $this;
+    }
+
     /** group by */
     public function groupBy($column)
     {

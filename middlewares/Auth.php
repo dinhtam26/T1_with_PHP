@@ -28,7 +28,7 @@ class Auth
 
 
             $this->permissionUserCatalogueModel = new PermissionUserCatalogueModel();
-            $listPermissionCatalogues = $this->permissionUserCatalogueModel->table("permission_user_catalogue")->select('*')->rightJoin($tableJoin, $relationship)->where('user_catalogue_id', '=', $user_catalogue_id)->get();
+            // $listPermissionCatalogues = $this->permissionUserCatalogueModel->table("permission_user_catalogue")->select('*')->rightJoin($tableJoin, $relationship)->where('user_catalogue_id', '=', $user_catalogue_id)->get();
         }
     }
 }

@@ -192,4 +192,10 @@ class Helper
         );
         return strtr($str, $unwanted_array);
     }
+
+    // Tạo sku 
+    public static function generateSKU($string)
+    {
+        dd($string);
+    }
 }
