@@ -10,6 +10,7 @@ use Libs\Controller;
 use Libs\Helper;
 use Libs\Session;
 use Libs\Upload;
+use Libs\Validate;
 
 class ProductController extends Controller
 {
@@ -63,19 +64,27 @@ class ProductController extends Controller
     // Thêm sản phẩm
     public function store()
     {
-        // dd($this->request);
         $rules = [
-            'name' => 'required|string|min:2|max:255',
-            'description' => 'string',
-            'brand_id'    => 'required',
+            'name'                 => 'required|string|min:2|max:255',
+            'description'          => 'string',
+            'brand_id'             => 'required',
             'product_catalogue_id' => 'required|numeric',
-            'image'                => 'required|image|min:1|max:200|extensions:jpG,jpeg,svg,gif',
-            'album'                => 'required',
+            'image'                => 'image|max:3000',
             'stock'                => 'required|integer',
             'price'                => 'required|numeric',
             'sale_price'           => 'numeric',
-            'cost_price'           => 'numeric',
+            'cost_price'           => 'required|numeric',
         ];
+
+
+        $validator = new Validate($this->request, $rules);
+        if ($validator->validate() !== true) {
+            $validator->getErrors();
+            $this->view("Admin/ProductManagement/product/create", ['data' =>  $validator->getResults()]);
+            return;
+        }
+
+
 
 
         // Thêm product trước
@@ -83,13 +92,15 @@ class ProductController extends Controller
         // Thêm product variant
         // Thêm product_variant_attribute
         try {
-            $this->productModel->beginTransaction();
+            ProductModel::beginTransaction();
             $product = $this->createProduct($this->request);
             $this->createProductHasAttribute($product, $this->request);
             $this->createProductVariant($product, $this->request);
-            $this->productModel->commit();
+            ProductModel::commit();
+            Session::setSession("success", "Created Product  Successfully");
+            Helper::redirect("admin/product");
         } catch (\Throwable $e) {
-            $this->productModel->rollBack();
+            ProductModel::rollBack();
             echo "Transaction failed: " . $e->getMessage();
         }
 
@@ -112,18 +123,17 @@ class ProductController extends Controller
     private function createProduct($request)
     {
         $dataCreateProduct = [];
-        $dataCreateProduct['name'] = $request['name'];
-        $dataCreateProduct['brand_id'] = $request['brand_id'];
+        $dataCreateProduct['name']          = $request['name'];
+        $dataCreateProduct['brand_id']      = $request['brand_id'];
+        $dataCreateProduct['type']          = $request['type'];
+        $dataCreateProduct['canonical']     = Helper::canonical($request['name']);
+        $dataCreateProduct['brand_id']      = $request['brand_id'];
+        $dataCreateProduct['description']   = $request['description'];
+        $dataCreateProduct['shipping_ids']  = json_encode($request['shipping_ids'] ?? "");
         $dataCreateProduct['product_catalogue_id'] = $request['product_catalogue_id'];
-        $dataCreateProduct['type'] = $request['type'];
-        $dataCreateProduct['canonical'] = Helper::canonical($request['name']);
-        $dataCreateProduct['brand_id'] = $request['brand_id'];
-        // $dataCreateProduct['experct'] = $request['experct'];
-        $dataCreateProduct['description'] = $request['description'];
-        $dataCreateProduct['shipping_ids'] = json_encode($request['shipping_ids']) ?? "";
-        $dataCreateProduct['publish'] = 1;
-        $dataCreateProduct['created_at'] = Helper::dateTime();
-        $dataCreateProduct['updated_at'] = Helper::dateTime();
+        $dataCreateProduct['publish']       = 1;
+        $dataCreateProduct['created_at']    = Helper::dateTime();
+        $dataCreateProduct['updated_at']    = Helper::dateTime();
 
         $product = ProductModel::create($dataCreateProduct);
         return $product;
@@ -140,17 +150,20 @@ class ProductController extends Controller
             }
         }
 
+
         if (!empty($request['enable_variant'])) {
             foreach ($request['enable_variant'] as $attribute_id => $enable_variant) {
                 $attribute[$attribute_id]['enable_variant'] = $enable_variant;
             }
         }
 
+        // dd($attribute);
+
         foreach ($attribute as $attribute_key => $attribute_value) {
-            $dataCreateAttribute['product_id'] = $product;
-            $dataCreateAttribute['attribute_id'] = $attribute_value['attribute_id'];
+            $dataCreateAttribute['product_id']          = $product;
+            $dataCreateAttribute['attribute_id']        = $attribute_value['attribute_id'];
             $dataCreateAttribute['attribute_value_ids'] = $attribute_value['attribute_value'];
-            $dataCreateAttribute['enable_variant'] = $attribute_value['enable_variant'] ?? 0;
+            $dataCreateAttribute['enable_variant']      = (($attribute_value['enable_variant'] ?? 0) == "on") ? 1 : 0;
             ProductHasAttributeModel::create($dataCreateAttribute);
         }
     }
@@ -213,22 +226,13 @@ class ProductController extends Controller
             $dataMain['length']             = $request['length'];
             $dataMain['width']              = $request['width'];
             $dataMain['height']             = $request['height'];
-            $folderUpload                   = "products/" . $this->folderUpload($request['product_catalogue_id']);
-            if (!empty($request['image_variant'])) {
-                $dataMain['image']              = $this->convertImageVariant($request['image_variant'], $folderUpload, $key);
-            } else {
-                $dataMain['image']              = Upload::uploadFile($request['image'], $folderUpload);
-            }
-
-            if (!empty($request['album_variant'])) {
-                $dataMain['album']              = $this->convertImageVariant($request['album_variant'], $folderUpload, $key);
-            } else {
-                $dataMain['album']              = $this->convertAlbum($request['album'], $folderUpload, true);
-            }
             $dataMain['publish']            = 1;
+            // Xử lý hình ảnh 
+            $dataMain['image']              = $this->handleImage($request['image'], $request['image_variant'], $request['product_catalogue_id'], $key);
+            $dataMain['album']              = $this->handleAlbum($request['album'], $request['album_variant'], $request['product_catalogue_id'], $key);
             $dataList[] = $dataMain;
         }
-        // dd($dataList);
+
         foreach ($dataList as $key => $dataVariant) {
             $product_variant = ProductVariantModel::create($dataVariant);
             $this->createProductVariantHasAttributeValue($product_variant, $request, $key);
@@ -237,12 +241,15 @@ class ProductController extends Controller
 
     private function createProductVariantHasAttributeValue($product_variant, $request, $index)
     {
+
         foreach ($request['enable_variant'] as $key => $value) {
-            if ($value == 1) {
-                $attribute[$key] = explode(",", $request['attribute_value'][$key]);
+            if ($value == "on") {
+                $attribute[$key] = $request['attribute_value'][$key];
             }
         }
         // dd($attribute);
+        // dd("a");
+
         $result = [];
         foreach ($attribute[1] as $key1  => $value1) {
             foreach ($attribute[2] as $key2 => $value2) {
@@ -250,18 +257,95 @@ class ProductController extends Controller
             }
         }
 
-        $data = [];
         // dd($result);
+        $data = [];
         if (!empty($result[$index])) {
             $prefix = array_pop($result[$index]);
             foreach ($result[$index] as  $value) {
                 $data[] = ['product_variant_id' =>  $prefix,  'attribute_value_id' => $value];
             }
-            // dd($data);
+
             foreach ($data as $key => $value) {
                 PrdVariantHasAttributeModel::create($value);
             }
         }
+    }
+
+    private function handleImage(array $image, array $imageVariant, $product_catalogue_id, $key)
+    {
+        $imageVariants = [];
+        foreach ($imageVariant['name'] as $index  => $value) {
+            $imageVariants[$index] =  [
+                'name'      => $imageVariant['name'][$index],
+                'full_path' => $imageVariant['full_path'][$index],
+                'type'      => $imageVariant['type'][$index],
+                'tmp_name'  => $imageVariant['tmp_name'][$index],
+                'error'     => $imageVariant['error'][$index],
+                'size'      => $imageVariant['size'][$index],
+            ];
+        }
+        $folderUpload  = "products/" . $this->folderUpload($product_catalogue_id);
+        $defaultImage  = Upload::uploadFile($image, $folderUpload);
+        foreach ($imageVariants as $index => $value) {
+            if ($index == $key) {
+                if (empty($imageVariants[$index]['name'])) {
+                    return $defaultImage;
+                }
+                return Upload::uploadFile($value, $folderUpload);
+            }
+        }
+    }
+
+    private function handleAlbum(array $albumProduct, array $albumVariant, $product_catalogue_id, $key)
+    {
+        // Xử lý album sản phẩm
+        $albums = array_map(function ($index) use ($albumProduct) {
+            return [
+                'name'      => $albumProduct['name'][$index],
+                'full_path' => $albumProduct['full_path'][$index],
+                'type'      => $albumProduct['type'][$index],
+                'tmp_name'  => $albumProduct['tmp_name'][$index],
+                'error'     => $albumProduct['error'][$index],
+                'size'      => $albumProduct['size'][$index],
+            ];
+        }, array_keys($albumProduct['name']));
+        // dd($albums);
+
+        // Xử lý album biến thể
+        $albumVariants = [];
+
+        foreach ($albumVariant['name'] as $index => $files) {
+            foreach ($files as $fileIndex => $fileName) {
+                $albumVariants[$index][] = [
+                    'name'      => $fileName,
+                    'tmp_name'  => $albumVariant['tmp_name'][$index][$fileIndex],
+                    "full_path" => $albumVariant['full_path'][$index][$fileIndex],
+                    "type"      => $albumVariant['type'][$index][$fileIndex],
+                    "error"     => $albumVariant['error'][$index][$fileIndex],
+                    "size"      => $albumVariant['size'][$index][$fileIndex],
+                ];
+            }
+        }
+
+
+        $folderUpload  = "products/" . $this->folderUpload($product_catalogue_id);
+        $result = [];
+        // dd($albumVariants);
+        foreach ($albumVariants as $index => $value) {
+            // dd($value);
+            if ($index == $key) {
+                if (empty($value['name'])) {
+                    foreach ($albums as $key => $album) {
+                        $result[] = Upload::uploadFile($album, $folderUpload);
+                    }
+                } else {
+                    $result[] = Upload::uploadFile($value, $folderUpload);
+                }
+            }
+        }
+        // dd($result);
+
+        return json_encode($result);
     }
 
     // Convert nhiều hình ảnh 
@@ -283,96 +367,36 @@ class ProductController extends Controller
         return json_encode($result);
     }
 
-    // Convert 1 hình ảnh cho từng sản phẩm
-    private function convertImageVariant($albums, $folderUpload, $key)
-    {
-        if (!empty($albums)) {
-            foreach ($albums['name'] as $index => $name) {
-                $outputAlbum[$index] = [
-                    "name"      => $albums["name"][$index],
-                    "full_path" => $albums["full_path"][$index],
-                    "type"      => $albums["type"][$index],
-                    "tmp_name"  => $albums["tmp_name"][$index],
-                    "error"     => $albums["error"][$index],
-                    "size"      => $albums["size"][$index]
-                ];
-            }
-
-            foreach ($outputAlbum as $index => $value) {
-                if ($key == $index) {
-                    return Upload::uploadFile($value, $folderUpload);
-                }
-            }
-        }
-    }
-
-    // Convert nhiều hình ảnh cho từng sản phẩm
-    private function convertAlbumVariant($albums, $folderUpload, $key)
-    {
-        if (!empty($albums)) {
-            foreach ($albums['name'] as $index => $files) {
-                foreach ($files as $fileIndex => $fileName) {
-                    $outputAlbum[$index][] = [
-                        'name' => $fileName,
-                        'tmp_name' => $albums['tmp_name'][$index][$fileIndex],
-                        "full_path" => $albums['full_path'][$index][$fileIndex],
-                        "type"      => $albums['type'][$index][$fileIndex],
-                        "error"     => $albums['error'][$index][$fileIndex],
-                        "size"      => $albums['size'][$index][$fileIndex],
-                    ];
-                }
-            }
-
-            foreach ($outputAlbum as $index => $value) {
-                if ($index == $key) {
-                    foreach ($value as  $val) {
-                        $result[] = Upload::uploadFile($val, $folderUpload);
-                    }
-                }
-            }
-
-            return json_encode($result);
-        }
-    }
-
-
-
-
     private function getAttributeVariant($request)
     {
-
         foreach ($request['enable_variant'] as $key => $value) {
-            if ($value == 1) {
+            if ($value == "on") {
                 $attribute[$key] = $request['attribute_value'][$key];
             }
         }
-
+        // dd($attribute);
         $attribute_value_ids = "";
         foreach ($attribute as $key => $value) {
-            $attribute_value_ids .=  "," . $value;
+            foreach ($value as $key => $val) {
+                $attribute_value_ids .=  "," . $val;
+            }
         }
-
         $attribute_value_ids = substr($attribute_value_ids, 1);
         $attribute_value_ids = explode(',', $attribute_value_ids);
-
-
         $attribute_value_ids = "'" . implode("','", $attribute_value_ids) . "'";
 
         $attribute_values_names = $this->attributeValueModel->table("attribute_values")->select("id, name")->inWhere("id", "IN", "(" . $attribute_value_ids . ")")->get();
-
         $attribute_values_name = [];
         foreach ($attribute_values_names as $value) {
             $attribute_values_name[$value->id] = $value->name;
         }
 
+        // dd($attribute_values_name);
         $result = [];
         foreach ($attribute as $key => $ids) {
-
-            $arrayIds =  explode(',', $ids);
-
             $result[$key] = array_map(function ($id) use ($attribute_values_name) {
                 return $attribute_values_name[$id];
-            }, $arrayIds);
+            }, $ids);
         }
 
 
@@ -493,4 +517,10 @@ class ProductController extends Controller
         echo json_encode(['attribute_values' => $data2]);
         exit;
     }
+    // Ý tưởng phát triển cho thêm sản phẩm
+    /**
+     * 1. Có thể thêm trực tiếp các thuộc tính cần thiết cho sản phẩm
+     * 2. Lọc theo thuộc tính (Màu sắc, Dung lượng) để sửa đổi các trường dữ liệu chỉ 1 lần
+     * 3. Tối ưu lại hình ảnh. Với những sản phẩm trùng hình ảnh. Chỉ cần upload 1 lần
+     */
 }

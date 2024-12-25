@@ -13,7 +13,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Tiêu đề sản phẩm</label>
+                                <label>Tiêu đề sản phẩm <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="name" placeholder="Tiêu đề sản phẩm">
                             </div>
 
@@ -29,7 +29,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Ảnh album sản phẩm</h4>
+                            <h4>Ảnh album sản phẩm <span class="text-danger">*</span></h4>
                         </div>
                         <div class="card-body">
                             <div style=" display: flex;flex-direction: column;margin-bottom: 20px;" class="form-group">
@@ -80,11 +80,11 @@
                                         <!-- Chung -->
                                         <div class="tab-pane fade  active show" id="home4" role="tabpanel" aria-labelledby="home-tab4">
                                             <p class="text-danger">Chú ý: <span class="text-danger">Nhập giá VND</span></p>
-                                            <h5>Thông tin giá</h5>
+                                            <h5>Thông tin giá </h5>
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label for="">Giá bán</label>
+                                                        <label for="">Giá bán <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" name="price">
                                                     </div>
                                                 </div>
@@ -98,7 +98,7 @@
 
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label for="">Giá vốn</label>
+                                                        <label for="">Giá vốn <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" name="cost_price">
                                                     </div>
                                                 </div>
@@ -116,14 +116,14 @@
 
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label for="">Số lượng</label>
+                                                        <label for="">Số lượng <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" name="stock">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label for="">Ngưỡng tồn kho thấp</label>
+                                                        <label for="">Ngưỡng tồn kho thấp <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" name="low_stock_amount">
                                                     </div>
                                                 </div>
@@ -195,20 +195,20 @@
                                         <div class="tab-pane fade" id="product_variants4" role="tabpanel" aria-labelledby="product_variants-tab4">
                                             <span style="pointer-events: none; cursor: not-allowed; color: gray; text-decoration: none; background:#e3dcdc;" class="btn" id="generateProductVariant">Tạo sản phẩm biến thể</span>
                                             <div id="accordion">
-                                              
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
                 <div class="col-12 col-md-3 col-lg-3">
                     <div class="card">
                         <div class="card-header">
                             <div class="form-group">
-                                <label for="album">Ảnh sản phẩm</label>
+                                <label for="album">Ảnh sản phẩm <span class="text-danger">*</span></label>
                                 <input type="file" name="image" id="image" />
                             </div>
                         </div>
@@ -224,7 +224,7 @@
                         <div class="card-body">
 
                             <div class="form-group">
-                                <label>Thương hiệu</label>
+                                <label>Thương hiệu <span class="text-danger">*</span></label>
                                 <select name="brand_id" class="form-control select2 " tabindex="-1" aria-hidden="true">
                                     <option value="">Chọn thương hiệu</option>
                                     <?php
@@ -240,7 +240,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Loại sản phẩm</label>
+                                <label>Loại sản phẩm <span class="text-danger">*</span></label>
                                 <select name="product_catalogue_id" class="form-control select2 " tabindex="-1" aria-hidden="true">
                                     <option value="">Chọn loại sản phẩm</option>
                                     <?php
@@ -259,23 +259,23 @@
                     </div>
                 </div>
             </div>
-               
-            </div>
 
-
-
-
-
-
-
-
-            <div class="form-group">
-                <button class="btn btn-primary btn-submit" type="submit">Create</button>
-            </div>
-        </form>
     </div>
 
 
-   
-  
+
+
+
+
+
+
+    <div class="form-group">
+        <button class="btn btn-primary btn-submit" type="submit">Create</button>
+    </div>
+    </form>
+    </div>
+
+
+
+
 </section>

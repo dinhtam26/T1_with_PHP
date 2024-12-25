@@ -177,18 +177,25 @@ class Model
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function beginTransaction()
+    public static function beginTransaction()
     {
-        $this->conn->beginTransaction();
+        $model = new static;
+        $model->conn->beginTransaction();
     }
 
-    public function commit()
+    public static function commit()
     {
-        $this->conn->commit();
+        $model = new static;
+        if ($model->conn->inTransaction()) {
+            $model->conn->commit();
+        }
     }
 
-    public function rollBack()
+    public static function rollBack()
     {
-        $this->conn->rollBack();
+        $model = new static;
+        if ($model->conn->inTransaction()) {
+            $model->conn->rollBack();
+        }
     }
 }

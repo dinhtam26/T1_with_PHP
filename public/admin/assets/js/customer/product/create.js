@@ -53,7 +53,7 @@ $(document).ready(function () {
                                     `;
                         html += `<div class="form-group d-flex justify-content-between align-items-center">
                                     <label style="width:100px" for="">${value.attribute_name}</label>
-                                    <select style="width: 520px;" data-name="${value.attribute_name}" name="attribute_value[${key}]" id="attribute_value_select-${key}" class="form-control select2 attribute_value_select" 
+                                    <select style="width: 520px;" data-name="${value.attribute_name}" name="attribute_value[${key}][]" id="attribute_value_select-${key}" class="form-control select2 attribute_value_select" 
                                         multiple="" tabindex="1" aria-hidden="false" 
                                         aria-placeholder="Choose class shipping">`;
 
@@ -122,8 +122,8 @@ $(document).ready(function () {
             let enableVariant = $(`input[id=${value}]`).is(":checked");
             // Kiểm tra xem input enable_variant được chọn chưa
 
-            let selectedValues = $(`select[name='attribute_value[${value}]']`).val(); // Lấy các giá trị được chọn
-            let selectedName = $(`select[name='attribute_value[${value}]']`).data("name");
+            let selectedValues = $(`select[name='attribute_value[${value}][]']`).val(); // Lấy các giá trị được chọn
+            let selectedName = $(`select[name='attribute_value[${value}][]']`).data("name");
             attribute_value[value] = attribute_value[value] || {};
             attribute_value[value]["name"] = selectedName;
             attribute_value[value]["values"] = selectedValues || [];
@@ -150,7 +150,7 @@ $(document).ready(function () {
                             let priceSale = $("input[name='sale_price']").val();
                             let priceCost = $("input[name='cost_price']").val();
                             let stock = $("input[name='stock']").val();
-                            let stock_low_amount = $("input[name='low_stock_amount']").val();
+                            let low_stock_amount = $("input[name='low_stock_amount']").val();
 
                             xhtml += `  <div class="d-flex align-items-center" style="    background: #5d62f10d; margin-top:15px; padding: 0px 16px">
                                             <div class="accordion" style="margin: 0px;">
@@ -171,7 +171,7 @@ $(document).ready(function () {
 
                                                     <div class="form-group">
                                                         <label>Hình ảnh</label>
-                                                        <input class="form-control album_variant" name="album_variant[]" multiple  type="file" data-id=${key} />
+                                                        <input class="form-control album_variant" name="album_variant[${key}][]" multiple  type="file" data-id=${key} />
                                                     </div>
 
                                                     <div class="row">
@@ -215,7 +215,7 @@ $(document).ready(function () {
                                                         <div class="col-4">
                                                             <div class="form-group">
                                                                 <label for="">Số lượng ngưỡng</label>
-                                                                <input type="text" class="form-control" name="low_stock_amount[]" value"${stock_low_amount}">
+                                                                <input type="text" class="form-control" name="low_stock_amount[]" value"${low_stock_amount}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -344,74 +344,74 @@ $(document).ready(function () {
     const imageFiles = handleFileInput(imageInput, imagePreviewArea, false); // Ảnh chính chỉ cho phép 1 ảnh
 
     // Xử lý khi form được submit
-    $("#uploadForm").on("submit", function (e) {
-        e.preventDefault(); // Ngăn form submit mặc định
+    // $("#uploadForm").on("submit", function (e) {
+    //     e.preventDefault(); // Ngăn form submit mặc định
 
-        const formData = new FormData();
+    //     const formData = new FormData();
 
-        // Append các dữ liệu khác (text input, select, v.v.) từ form trừ input file
-        $(this)
-            .find("input, select, textarea")
-            .not('input[type="file"]')
-            .each(function () {
-                // formData.append($(this).attr("name"), $(this).val());
-                const name = $(this).attr("name");
-                const value = $(this).is(":checkbox") ? ($(this).is(":checked") ? 1 : 0) : $(this).val();
-                formData.append(name, value);
-            });
+    //     // Append các dữ liệu khác (text input, select, v.v.) từ form trừ input file
+    //     $(this)
+    //         .find("input, select, textarea")
+    //         .not('input[type="file"]')
+    //         .each(function () {
+    //             // formData.append($(this).attr("name"), $(this).val());
+    //             const name = $(this).attr("name");
+    //             const value = $(this).is(":checkbox") ? ($(this).is(":checked") ? 1 : 0) : $(this).val();
+    //             formData.append(name, value);
+    //         });
 
-        // Append các file từ albumFiles vào FormData
-        albumFiles.forEach((file) => {
-            formData.append("album[]", file);
-        });
+    //     // Append các file từ albumFiles vào FormData
+    //     albumFiles.forEach((file) => {
+    //         formData.append("album[]", file);
+    //     });
 
-        // Append file từ imageFiles vào FormData (nếu có file được chọn)
-        if (imageFiles.length > 0) {
-            formData.append("image", imageFiles[0]); // Chỉ lấy file đầu tiên
-        }
+    //     // Append file từ imageFiles vào FormData (nếu có file được chọn)
+    //     if (imageFiles.length > 0) {
+    //         formData.append("image", imageFiles[0]); // Chỉ lấy file đầu tiên
+    //     }
 
-        // Append các file từ albumFiles vào FormData
+    //     // Append các file từ albumFiles vào FormData
 
-        $(".image_variant").each(function () {
-            const files = $(this)[0].files; // Get the files for this input
-            if (files.length > 0) {
-                formData.append("image_variant[]", files[0]); // Only append the first file
-            }
-        });
+    //     $(".image_variant").each(function () {
+    //         const files = $(this)[0].files; // Get the files for this input
+    //         if (files.length > 0) {
+    //             formData.append("image_variant[]", files[0]); // Only append the first file
+    //         }
+    //     });
 
-        $(".album_variant").each(function () {
-            const files = $(this)[0].files; // Lấy danh sách file của input hiện tại
-            const id = $(this).data("id");
-            console.log(id);
+    //     $(".album_variant").each(function () {
+    //         const files = $(this)[0].files; // Lấy danh sách file của input hiện tại
+    //         const id = $(this).data("id");
+    //         console.log(id);
 
-            if (files.length > 0) {
-                for (let i = 0; i < files.length; i++) {
-                    // Gửi file kèm ID
-                    formData.append(`album_variant[${id}][]`, files[i]);
-                }
-            }
-        });
+    //         if (files.length > 0) {
+    //             for (let i = 0; i < files.length; i++) {
+    //                 // Gửi file kèm ID
+    //                 formData.append(`album_variant[${id}][]`, files[i]);
+    //             }
+    //         }
+    //     });
 
-        // Gửi dữ liệu qua AJAX
-        $.ajax({
-            url: $(this).attr("action"), // URL được lấy từ thuộc tính action của form
-            method: $(this).attr("method"), // Phương thức được lấy từ thuộc tính method của form
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                console.log(response);
+    //     // Gửi dữ liệu qua AJAX
+    //     $.ajax({
+    //         url: $(this).attr("action"), // URL được lấy từ thuộc tính action của form
+    //         method: $(this).attr("method"), // Phương thức được lấy từ thuộc tính method của form
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false,
+    //         success: function (response) {
+    //             console.log(response);
 
-                setTimeout(function () {
-                    window.location.href = "http://localhost/magento-ecommerce/admin/product";
-                }, 2500);
-                toastr.success("Create Product Successfully");
-            },
-            error: function (xhr) {
-                console.error(xhr.responseText);
-            },
-        });
-    });
+    //             // setTimeout(function () {
+    //             //     window.location.href = "http://localhost/magento-ecommerce/admin/product";
+    //             // }, 2500);
+    //             // toastr.success("Create Product Successfully");
+    //         },
+    //         error: function (xhr) {
+    //             console.error(xhr.responseText);
+    //         },
+    //     });
+    // });
 
     // Xử lý attribute
 });
