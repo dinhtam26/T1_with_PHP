@@ -1,94 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+    lang="en"
+    data-layout="vertical"
+    data-topbar="light"
+    data-sidebar="dark"
+    data-sidebar-size="lg"
+    data-sidebar-image="none"
+    data-preloader="disable">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport" />
-    <title>Ecommerce Dashboard &mdash; Stisla</title>
+    <meta charset="utf-8" />
+    <title>CRM | Velzon - Admin & Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="<?= ADMIN_URL ?>assets/images/favicon.ico" />
 
-    <!-- General CSS Files -->
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/fontawesome/css/all.min.css">
+    <!-- dropzone css -->
+    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/libs/dropzone/dropzone.css" type="text/css" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-
-
-    <!-- CSS Libraries -->
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/jqvmap/dist/jqvmap.min.css">
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/summernote/summernote-bs4.css">
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/owlcarousel2/dist/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/owlcarousel2/dist/assets/owl.theme.default.min.css">
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/jquery-selectric/selectric.css">
-
-
-
-
-    <!-- Template CSS -->
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/css/style.css">
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/css/components.css">
-
+    <!-- Layout config Js -->
+    <script src="<?= ADMIN_URL ?>assets/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="<?= ADMIN_URL ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="<?= ADMIN_URL ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="<?= ADMIN_URL ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="<?= ADMIN_URL ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
     <!-- Toastr Css -->
     <link rel="stylesheet" href="/magento-ecommerce/public/include/css/toastr.min.css" />
-    <!-- DataTable Css -->
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/datatables/datatables.min.css">
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
 
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
-
-    <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/modules/dropzonejs/dropzone.css">
-
-    <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11">
-    </script>
-
-
-
-    <!-- Start GA -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-94034622-3');
-    </script>
-    <!-- /END GA -->
-
-
-
+    <link rel="stylesheet" href="/magento-ecommerce/public/include/css/upload.css">
 </head>
 
 <body>
-    <div id="app">
-        <div class="main-wrapper main-wrapper-1">
-            <!-- Navbar -->
-            <?php
+    <!-- Begin page -->
+    <div id="layout-wrapper">
 
-            use Libs\Session;
-            use Libs\Route;
+        <!-- Navbar -->
+        <?php
 
-            include_once 'partials/navbar.php'
-            ?>
+        use Libs\Session;
 
-            <!-- Sidebar -->
-            <?php
-            include_once 'partials/sidebar.php'
-            ?>
-
-            <!-- Main Content -->
-            <div class="main-content">
-                <section class="section">
-                    <?php
-                    require_once APP_PATH . "Views" . DS . $this->fileView . ".php"; ?>
-                </section>
+        include_once 'partials/navbar.php'
+        ?>
+        <!-- removeNotificationModal -->
+        <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            id="NotificationModalbtn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mt-2 text-center">
+                            <lord-icon
+                                src="https://cdn.lordicon.com/gsqxdxog.json"
+                                trigger="loop"
+                                colors="primary:#f7b84b,secondary:#f06548"
+                                style="width: 100px; height: 100px"></lord-icon>
+                            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                <h4>Are you sure ?</h4>
+                                <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                            <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn w-sm btn-danger" id="delete-notification">Yes, Delete It!</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
             </div>
-            <?php
+            <!-- /.modal-dialog -->
+        </div>
 
-            ?>
+        <!-- ========== Sidebar ========== -->
+        <?php
+        include_once 'partials/sidebar.php'
+        ?>
+
+
+        <div class="vertical-overlay"></div>
+
+        <!-- Start right Content here -->
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+                    <?php require_once APP_PATH . "Views" . DS . $this->fileView . ".php"; ?>
+                </div>
+            </div>
+
             <!-- Footer -->
             <?php
             include_once 'partials/footer.php'
@@ -96,58 +105,36 @@
         </div>
     </div>
 
-    <!-- General JS Scripts -->
-    <!-- <script src="<?= ADMIN_URL ?>assets/modules/jquery.min.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/popper.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/tooltip.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/bootstrap/js/bootstrap.min.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/moment.min.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/js/stisla.js"></script>
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
 
-    <!-- JS Libraies -->
-    <script src="<?= ADMIN_URL ?>assets/modules/jquery.sparkline.min.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/chart.min.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/owlcarousel2/dist/owl.carousel.min.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/summernote/summernote-bs4.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
+    <!-- JAVASCRIPT -->
+    <script src="<?= ADMIN_URL ?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= ADMIN_URL ?>assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="<?= ADMIN_URL ?>assets/libs/node-waves/waves.min.js"></script>
+    <script src="<?= ADMIN_URL ?>assets/libs/feather-icons/feather.min.js"></script>
+    <script src="<?= ADMIN_URL ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="<?= ADMIN_URL ?>assets/js/plugins.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- dropzone min -->
+    <script src="<?= ADMIN_URL ?>assets/libs/dropzone/dropzone-min.js"></script>
 
-    <script src="<?= ADMIN_URL ?>assets/js/page/modules-ion-icons.js"></script>
-    <!-- Template JS File -->
-    <script src="<?= ADMIN_URL ?>assets/js/scripts.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/js/custom.js"></script>
+    <script src="<?= ADMIN_URL ?>assets/js/pages/form-file-upload.init.js"></script>
 
-    <!-- DataTable JS  -->
-    <script src="<?= ADMIN_URL ?>assets/modules/datatables/datatables.min.js"></script>
-    <script src="<?= ADMIN_URL ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-    <!-- <script src="<?= ADMIN_URL ?>assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script> -->
+    <!-- Validate form -->
+    <script src="<?= ADMIN_URL ?>assets/js/pages/form-validation.init.js"></script>
 
-    <script src="<?= ADMIN_URL ?>assets/js/page/modules-datatables.js"></script>
+    <!-- App js -->
+    <script src="<?= ADMIN_URL ?>assets/js/app.js"></script>
+
+    <script src="/magento-ecommerce/public/include/js/upload.js"></script>
 
     <!-- Toastr Js -->
     <script src="/magento-ecommerce/public/include/js/toastr.min.js"></script>
-
-    <!-- Customer -->
-    <script src="<?= ADMIN_URL ?>assets/js/customer/main.js"></script>
-
-
-    <!-- Page Specific JS File -->
-    <script src="<?= ADMIN_URL ?>assets/js/page/index.js"></script>
-
-
-    <script src="<?= ADMIN_URL ?>assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
-
-    <script src="<?= ADMIN_URL ?>assets/modules/dropzonejs/min/dropzone.min.js"></script>
-
-    <script src="<?= ADMIN_URL ?>assets/js/page/bootstrap-modal.js"></script>
-
-    <script src="<?= $this->js ?? "hahaha" ?>"></script>
-
-    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
     <script>
         toastr.options = {
@@ -155,7 +142,7 @@
             "debug": true,
             "newestOnTop": false,
             "progressBar": true,
-            "positionClass": "toast-top-right",
+            "positionClass": "toast-top-center",
             "preventDuplicates": true,
             "onclick": null,
             "showDuration": "300",
@@ -167,8 +154,6 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-
-
         <?php
         $success = Session::getSession('success');
         if (!empty($success)) {
@@ -177,77 +162,8 @@
         <?php
             Session::deleteSession('success');
         }
-
-
-
-
         ?>
 
-        <?php
-        $errors = Session::getSession('errors');
-        if (!empty($errors)) {
-            foreach ($errors as $error) {
-        ?>
-                toastr.error("<?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?>");
-        <?php
-                Session::deleteSession('errors');
-            }
-        }
-
-        ?>
-    </script>
-
-    <script>
-        // let table = new DataTable("#myTable");
-
-
-        // ChangeStatus
-        function changeStatus(id, url) {
-            urlPath = "<?= ROOT_URL ?>admin/" + url + "/changeStatus/" + id;
-
-            $.ajax({
-                type: "POST",
-                url: urlPath,
-                dataType: "json",
-                success: function(response) {
-                    if (response.status === 'success') {
-                        toastr.success(response.message);
-                    } else if (response.status === 'error') {
-                        toastr.error(response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-
-                }
-            });
-        }
-        /** ChangeStatusFeature */
-        function changeStatusIsFeature(id, url) {
-            urlPath = "/magento-ecommerce/admin/" + url + "/changeStatusIsFeature/" + id;
-            console.log(urlPath);
-
-            $.ajax({
-                type: "POST",
-                url: urlPath,
-                dataType: "json",
-                success: function(response) {
-                    console.log(response);
-
-                    if (response.status === "success") {
-                        toastr.success(response.message);
-                    } else if (response.status === "error") {
-                        toastr.error(response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                },
-            });
-        }
-
-
-        // Delete Item
         $(document).ready(function() {
             $(".delete_item").on('click', function(e) {
                 e.preventDefault();
@@ -285,11 +201,9 @@
                 });
             })
         });
-        // Dropzone has been added as a global variable.
-        const dropzone = new Dropzone("form.my-dropzone", {
-            url: "/file/post"
-        });
     </script>
+
+
 </body>
 
 </html>

@@ -1,79 +1,162 @@
-<section class="section-header">
-    <h1>User List</h1>
-</section>
+<!-- TitleTitle -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Người dùng</h4>
 
-<section class="section-body">
-    <div class="card" style="width: 100%">
-        <div class="card-header">
-            <div class="card-header d-flex justify-content-end">
-                <a class="btn btn-primary" href="<?php ROOT_PATH ?>user/create">Create User</a>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped dataTable no-footer" id="table-2" role="grid" aria-describedby="table-2_info" style="width: 100%">
-                    <thead>
-                        <tr role="row">
-                            <th class="text-center sorting_asc" style="width: 5%">
-                                <div class="custom-checkbox custom-control">
-                                    <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
-                                    <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
-                                </div>
-                            </th>
-                            <th style="width: 5%">ID</th>
-                            <th style="width: 15%">Full Name</th>
-                            <th style="width: 15%">Email</th>
-                            <th style="width: 10%">Phone</th>
-                            <th style="width: 10%">Role admin</th>
-                            <th style="width: 10%">Publish</th>
-                            <th style="width: 5%">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if (!empty($listUser)) {
-                            foreach ($listUser as $key => $user) {
-
-
-                        ?>
-                                <tr role="row" class="odd" id="#item<?= $user['id'] ?>">
-                                    <td class="sorting_1 text-center">
-                                        <div class="custom-checkbox custom-control">
-                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
-                                            <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
-                                        </div>
-                                    </td>
-                                    <td style="text-align: center;"><?= $user['id'] ?></td>
-                                    <td><?= $user['fullname'] ?></td>
-                                    <td><?= $user['email'] ?></td>
-                                    <td><?= $user['phone'] ?></td>
-                                    <td style="text-align: center;">
-                                        <?= ($user['user_catalogue']['code'] == 'admin') ? '<span class="badge badge-primary">Admin</span>' : '<span class="badge badge-success">Member</span>' ?>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <label class="custom-switch mt-2">
-                                            <input type="checkbox" name="publish" value="<?= $user['publish'] ?>" <?= ($user['publish'] == 1) ? "checked" : ""  ?> class="custom-switch-input" onchange="changeStatus(<?php echo $user['id']; ?>, 'user')">
-                                            <span class="custom-switch-indicator"></span>
-                                        </label>
-
-                                    </td>
-                                    <td class="d-flex justify-content-around">
-                                        <a class="btn btn-outline-warning" href="user/<?= $user['id'] ?>/edit">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
-                                        <a class="btn btn-outline-danger delete_item" href="user/<?= $user['id'] ?>">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                        <?php
-                            }
-                        } else {
-                        }
-                        ?>
-                    </tbody>
-                </table>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript: void(0);">Quản lý người dùng</a>
+                    </li>
+                    <li class="breadcrumb-item active">Danh sách</li>
+                </ol>
             </div>
         </div>
     </div>
-</section>
+</div>
+<!-- Main content -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card" id="customerList">
+            <div class="card-header border-bottom-dashed">
+
+                <div class="row g-4 align-items-center">
+                    <div class="col-sm">
+                        <div>
+                            <h5 class="card-title mb-0">Customer List</h5>
+                        </div>
+                    </div>
+                    <div class="col-sm-auto">
+                        <div class="d-flex flex-wrap align-items-start gap-2">
+                            <button class="btn btn-soft-danger" id="remove-actions" onclick="deleteMultiple()" style="display:block"><i class="ri-delete-bin-2-line"></i></button>
+                            <a class="btn btn-success add-btn" href="<?php ROOT_PATH ?>user/create"><i class="ri-add-line align-bottom me-1"></i> Thêm người dùng</a>
+                            <button type="button" class="btn btn-info"><i class="ri-file-download-line align-bottom me-1"></i> Import</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-bottom-dashed border-bottom">
+                <form>
+                    <div class="row g-3">
+                        <!-- Search -->
+                        <div class="col-xl-4">
+                            <div class="search-box">
+                                <input type="text" class="form-control search" placeholder="Search for customer, email, phone, status or something...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <!-- Status -->
+                        <div class="col-xl-8">
+                            <div class="row g-3">
+
+                                <div class="col-sm-3">
+                                    <div>
+                                        <select class="form-control" data-plugin="choices" data-choices="" data-choices-search-false="" name="choices-single-default" id="idStatus">
+                                            <option value="">Status</option>
+                                            <option value="all" selected="">All</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Block">Block</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-1">
+                        <table class="table align-middle" id="customerTable">
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th scope="col" style="width: 50px;">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                        </div>
+                                    </th>
+                                    <th class="sort" data-sort="customer_name">ID</th>
+                                    <th class="sort" data-sort="customer_name">FullName</th>
+                                    <th class="sort" data-sort="email">Email</th>
+                                    <th class="sort" data-sort="phone">Phone</th>
+                                    <th class="sort" data-sort="date">Role</th>
+                                    <th class="sort" data-sort="status">Status</th>
+                                    <th class="sort" data-sort="action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list form-check-all">
+                                <?php
+                                if (!empty($listUser)) {
+                                    foreach ($listUser as $key => $user) {
+                                ?>
+                                        <tr>
+                                            <th scope="row">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
+                                                </div>
+                                            </th>
+                                            <td class="id"><?= $user['id'] ?></td>
+                                            <td class="customer_name"><?= $user['fullname'] ?></td>
+                                            <td class="email"><?= $user['email'] ?></td>
+                                            <td class="phone"><?= $user['phone'] ?></td>
+                                            <td> <?= ($user['user_catalogue']['code'] == 'admin') ? '<span class="badge bg-info">Admin</span>' : '<span class="badge bg-success">Member</span>' ?></td>
+                                            <td class="status">
+                                                <div class="form-check form-switch form-switch-info form-switch-md mb-3">
+                                                    <input class="form-check-input" type="checkbox" name="publish" value="<?= $user['publish'] ?>" <?= ($user['publish'] == 1) ? "checked" : ""  ?> onchange="changeStatus(<?php echo $user['id']; ?>, 'user')">
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <ul class="list-inline hstack gap-2 mb-0">
+                                                    <li class="list-inline-item edit">
+                                                        <a href="user/<?= $user['id'] ?>/edit" class="text-primary d-inline-block edit-item-btn">
+                                                            <i class="ri-pencil-fill fs-16"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <a class="text-danger d-inline-block remove-item-btn delete_item" href="user/<?= $user['id'] ?>">
+                                                            <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    }
+                                } else {
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                        <div class="noresult" style="display: none">
+                            <div class="text-center">
+                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
+                                <h5 class="mt-2">Sorry! No Result Found</h5>
+                                <p class="text-muted mb-0">We've searched more than 150+ customer We did not find any customer for you search.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Phân trang -->
+                    <!-- <div class="d-flex justify-content-end">
+                        <div class="pagination-wrap hstack gap-2" style="display: flex;">
+                            <a class="page-item pagination-prev disabled" href="#">
+                                Previous
+                            </a>
+                            <ul class="pagination listjs-pagination mb-0">
+                                <li class="active"><a class="page" href="#" data-i="1" data-page="8">1</a></li>
+                                <li><a class="page" href="#" data-i="2" data-page="8">2</a></li>
+                            </ul>
+                            <a class="page-item pagination-next" href="#">
+                                Next
+                            </a>
+                        </div>
+                    </div> -->
+                    <!-- End phân trang  -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--end col-->
+</div>

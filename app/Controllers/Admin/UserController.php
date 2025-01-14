@@ -18,6 +18,7 @@ class UserController extends Controller
         parent::loadFileTemplate($this, "Admin/layout", "master");
         $this->userModel = $this->model('user');
         $this->userCatalogueModel = $this->model('userCatalogue');
+
         $this->request = array_merge($_POST, $_GET, $_FILES);
     }
 
@@ -35,6 +36,8 @@ class UserController extends Controller
 
     public function store()
     {
+
+
         $rules = [
             'fullname'  => 'required|string|min:2|max:55',
             'email'     => 'required|email|unique:users',
@@ -43,11 +46,10 @@ class UserController extends Controller
             'phone'     => 'phone',
         ];
 
-
         $validator = new Validate($this->request, $rules);
         if ($validator->validate() !== true) {
             $validator->getErrors();
-            $this->view('Admin/UserManagement/User/create', ['data' =>  $validator->getResults(), 'userCatalogues' => $this->getUserCatalogue()]);
+            $this->view('Admin/UserManagement/User/create', ['data' =>  $validator->getResults(), 'userCatalogues' => $this->getUserCatalogue(), 'errors' =>  $validator->getErrors()]);
             return;
         }
 
@@ -62,7 +64,6 @@ class UserController extends Controller
         $dataCreate['created_at']           = Helper::dateTime();
         $dataCreate['updated_at']           = Helper::dateTime();
 
-        // dd($dataCreate);
         UserModel::create($dataCreate);
         Session::setSession('success', 'Created User Successfully');
         Helper::redirect('admin/user');
@@ -100,7 +101,7 @@ class UserController extends Controller
         $user['password']           = $this->request['password'];
         $user['phone']              = $this->request['phone'];
         $user['publish']            = $this->request['publish'] ?? 0;
-        if (is_array($this->request['avatar'])) {
+        if (is_array($this->request['avatar']) && $this->request['avatar']['size'] > 0) {
             $oldAvatar = $user['avatar'];
             $user['avatar']             = Upload::uploadFile($this->request['avatar'], "user");
             Upload::deleteFileUpload("user", $oldAvatar);

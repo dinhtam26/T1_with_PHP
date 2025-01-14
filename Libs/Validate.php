@@ -92,10 +92,11 @@ class Validate
     /** Get Error */
     public function getErrors()
     {
-        foreach ($this->errors as $key => $value) {
-            $arr[] = $value[0];
-            Session::setSession('errors', $arr);
-        }
+        return $this->errors;
+        // foreach ($this->errors as $key => $value) {
+        //     $arr[] = $value[0];
+        //     Session::setSession('errors', $arr);
+        // }
     }
 
     public function getResults()

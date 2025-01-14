@@ -23,9 +23,7 @@ class Helper
     public static function Auth()
     {
         $auth = Session::getSession('auth');
-        $id = $auth['id'];
-        $user = UserModel::find($id);
-        return $user;
+        return $auth;
     }
 
     public static function canonical($string, $upper = false)

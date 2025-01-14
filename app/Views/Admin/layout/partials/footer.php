@@ -1,8 +1,15 @@
-<footer class="main-footer">
-    <div class="footer-left">
-        Copyright &copy; 2024 <div class="bullet"></div> Design By <a href="https://nauval.in/">Nguyễn Đình Tam</a>
-    </div>
-    <div class="footer-right">
-
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <script>
+                    document.write(new Date().getFullYear());
+                </script>
+                © Velzon.
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end d-none d-sm-block">Design & Develop by Themesbrand</div>
+            </div>
+        </div>
     </div>
 </footer>

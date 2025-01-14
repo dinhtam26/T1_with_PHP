@@ -1,0 +1,127 @@
+/* Container tùy chỉnh cho input file */
+.file-upload-container {
+    display: inline-block;
+    position: relative;
+}
+
+/* Ẩn input file mặc định */
+#imageInput {
+    display: none;
+}
+
+/* Nhãn tùy chỉnh cho input file */
+.file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+    border: 2px dashed #405189;
+    border-radius: 10px;
+    color: #405189;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Biểu tượng trong nhãn */
+.file-upload-label i {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #405189;
+}
+
+/* Hiệu ứng khi hover */
+.file-upload-label:hover {
+    background: rgb(241, 241, 241);
+    color: #405189;
+    border-color: #405189;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+/* Khu vực xem trước ảnh */
+#preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    /* margin-top: 20px; */
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.image-container:hover {
+    transform: scale(1.05);
+}
+
+.image-container img {
+    display: block;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.image-container .delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.image-container .delete-btn:hover {
+    background-color: rgba(255, 0, 0, 0.9);
+    transform: scale(1.1);
+}
+
+/* Tùy chỉnh nhãn input */
+.custom-file-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #007bff, #00c6ff);
+    color: white;
+    border: 2px solid #007bff;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Hiệu ứng hover */
+.custom-file-label:hover {
+    background: linear-gradient(to right, #0056b3, #007bff);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Biểu tượng upload */
+.custom-file-label i {
+    margin-right: 10px;
+    font-size: 18px;
+}
