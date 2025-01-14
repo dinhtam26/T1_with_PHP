@@ -91,7 +91,7 @@
                                 if (!empty($listUser)) {
                                     foreach ($listUser as $key => $user) {
                                 ?>
-                                        <tr>
+                                        <tr id="item-<?= $user['id'] ?>">
                                             <th scope="row">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="chk_child" value="option1">

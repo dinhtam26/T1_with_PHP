@@ -136,6 +136,9 @@
     <!-- Toastr Js -->
     <script src="/magento-ecommerce/public/include/js/toastr.min.js"></script>
 
+    <!-- Swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         toastr.options = {
             "closeButton": true,
