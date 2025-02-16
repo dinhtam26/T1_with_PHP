@@ -167,6 +167,52 @@
         }
         ?>
 
+        // ChangeStatus
+        function changeStatus(id, url) {
+            urlPath = "<?= ROOT_URL ?>admin/" + url + "/changeStatus/" + id;
+
+            $.ajax({
+                type: "POST",
+                url: urlPath,
+                dataType: "json",
+                success: function(response) {
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
+                    } else if (response.status === 'error') {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+
+                }
+            });
+        }
+
+        /** ChangeStatusFeature */
+        function changeStatusIsFeature(id, url) {
+            urlPath = "/magento-ecommerce/admin/" + url + "/changeStatusIsFeature/" + id;
+            console.log(urlPath);
+
+            $.ajax({
+                type: "POST",
+                url: urlPath,
+                dataType: "json",
+                success: function(response) {
+                    if (response.status === "success") {
+                        toastr.success(response.message);
+                    } else if (response.status === "error") {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                },
+            });
+        }
+
+
+        // Delete Item
         $(document).ready(function() {
             $(".delete_item").on('click', function(e) {
                 e.preventDefault();
@@ -202,7 +248,51 @@
                         });
                     }
                 });
+            });
+
+            // filter status
+            $("#idStatus").on("change", function() {
+                let status = $(this).val();
+                console.log(status);
+
+                let url = "<?= ROOT_URL ?>admin/user";
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: {
+                        status: status
+                    },
+                    success: function(response) {
+                        console.log(response);
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+
+                    }
+                })
             })
+
+
+            // Xử lí dropdown
+            let currentUrl = window.location.href;
+            // Duyệt qua tất cả các thẻ <a> bên trong menu
+            $(".nav-item .nav-link").each(function() {
+                let menuItem = $(this);
+
+                // Kiểm tra nếu href của menu có trong URL hiện tại
+                if (currentUrl.includes(menuItem.attr("href"))) {
+                    menuItem.addClass("active"); // Thêm class active vào menu đang mở
+
+                    // Mở dropdown nếu mục đó thuộc menu con
+                    let parentDropdown = menuItem.closest(".collapse");
+                    if (parentDropdown.length > 0) {
+                        parentDropdown.addClass("show"); // Mở menu dropdown
+                        parentDropdown.prev(".menu-link").attr("aria-expanded", "true"); // Cập nhật thuộc tính mở rộng
+                    }
+                }
+            });
         });
     </script>
 

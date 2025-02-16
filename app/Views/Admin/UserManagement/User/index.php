@@ -50,14 +50,12 @@
                         <!-- Status -->
                         <div class="col-xl-8">
                             <div class="row g-3">
-
                                 <div class="col-sm-3">
                                     <div>
                                         <select class="form-control" data-plugin="choices" data-choices="" data-choices-search-false="" name="choices-single-default" id="idStatus">
                                             <option value="">Status</option>
-                                            <option value="all" selected="">All</option>
-                                            <option value="Active">Active</option>
-                                            <option value="Block">Block</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
                                         </select>
                                     </div>
                                 </div>

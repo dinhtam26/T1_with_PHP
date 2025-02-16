@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $listUser = $this->userModel->userWithUserCatalogue();
+        $listUser = $this->userModel->userWithUserCatalogue($this->request ?? "");
         return $this->view("Admin/UserManagement/User/index", ['listUser' => $listUser]);
     }
 

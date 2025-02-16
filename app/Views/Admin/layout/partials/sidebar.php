@@ -80,15 +80,15 @@
                 <li class="nav-item">
                     <a
                         class="nav-link menu-link"
-                        href="#sidebarDashboards"
+                        href="#sidebarUser"
                         data-bs-toggle="collapse"
                         role="button"
                         aria-expanded="false"
-                        aria-controls="sidebarDashboards">
+                        aria-controls="sidebarUser">
                         <i class="ri-dashboard-2-line"></i>
-                        <span data-key="t-dashboards">Quản lý người dùng</span>
+                        <span data-key="t-user">Quản lý người dùng</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarDashboards">
+                    <div class="collapse menu-dropdown" id="sidebarUser">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="<?= ROOT_URL ?>admin/userCatalogue" class="nav-link"> Nhóm người dùng </a>

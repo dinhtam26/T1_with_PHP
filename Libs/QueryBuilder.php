@@ -59,7 +59,7 @@ trait QueryBuilder
         if (!empty($this->where)) {
             $this->where[] = " AND `$field` $compare '$value'";
         } else {
-            $this->where[] = " WHERE `$field` $compare '$value'";
+            $this->where[] = " WHERE $field $compare '$value'";
         }
         return $this;
     }

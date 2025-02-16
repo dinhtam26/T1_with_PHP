@@ -13,13 +13,17 @@ class UserModel extends Model
         $this->setTable('users');
     }
 
-    public function userWithUserCatalogue()
+    public function userWithUserCatalogue($request = null)
     {
+
+
+
         $tableJoin      = "user_catalogues";
         $select         = "$this->tablename.*,  $tableJoin.id AS catalogue_id, $tableJoin.code AS catalogue_code, $tableJoin.name AS catalogue_name, $tableJoin.description AS catalogue_description";
         $relationship   = "$this->tablename.user_catalogue_id  = $tableJoin.id ";
 
         $datas = $this->table($this->tablename)->select($select)->leftJoin($tableJoin, $relationship)->get();
+
         if (!empty($datas)) {
             foreach ($datas as $key => $data) {
                 $result[] = [
@@ -43,7 +47,6 @@ class UserModel extends Model
                     ],
                 ];
             }
-
             return $result;
         }
     }

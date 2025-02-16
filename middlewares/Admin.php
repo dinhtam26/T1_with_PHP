@@ -9,7 +9,6 @@ class Admin
 {
     public function handle()
     {
-
         if (isset($_SESSION['auth'])) {
             $auth = Session::getSession('auth');
 

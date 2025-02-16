@@ -25,7 +25,6 @@ Session::init();
 $router = new Route();
 
 
-// dd(Session::getSession('auth'));
 
 
 Route::get('/', [HomeController::class, 'index']);
@@ -49,7 +48,6 @@ Route::destroy("/admin/user/{id}",          [UserController::class, 'deleted'], 
 Route::put("/admin/user/changeStatus/{id}", [UserController::class, 'changeStatus'],    ['auth', 'admin']);
 
 /** User Catalogue */
-
 Route::get("/admin/userCatalogue", [UserCatalogueController::class, 'index'], ['auth', 'admin']);
 Route::get("/admin/userCatalogue/create", [UserCatalogueController::class, 'create'], ['auth', 'admin']);
 Route::post("/admin/userCatalogue/create", [UserCatalogueController::class, 'store'], ['auth', 'admin']);
@@ -62,7 +60,6 @@ Route::destroy("/admin/{id}/userCatalogue", [UserCatalogueController::class, 'de
 
 // User Catalogue Permission
 Route::get("/admin/userCatalogue/permission", [UserCatalogueController::class, 'userCataloguePermission'], ['auth', 'admin']);
-
 Route::get("/admin/userCatalogue/storePermission", [UserCatalogueController::class, 'userCatalogueStorePermission'], ['auth', 'admin']);
 Route::destroy("/admin/userCatalogue/deletePermission", [UserCatalogueController::class, 'userCatalogueDeletePermission'], ['auth', 'admin']);
 
@@ -118,15 +115,6 @@ Route::get("/admin/product/create", [ProductController::class, 'create'], ['auth
 Route::post("/admin/product/create", [ProductController::class, 'store'], ['auth', 'admin']);
 Route::get("/admin/product/{id}/edit", [ProductController::class, 'edit'], ['auth', 'admin']);
 Route::put("/admin/product/{id}/edit", [ProductController::class, 'update'], ['auth', 'admin']);
-
-
-
-
-
-
-
-
-
 
 
 
