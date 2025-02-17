@@ -44,18 +44,18 @@ $(document).ready(function () {
                 success: function (response) {
                     let html = "";
                     $.each(response.attribute, function (key, value) {
-                        let xhtml = `
-                                        <label class="colorinput">
-                                            <input  type="checkbox" name="enable_variant[${key}]"  class="colorinput-input" id="${key}">
-                                            <span class="colorinput-color bg-primary"></span>
-                                            
-                                        </label>
+                        let xhtml = `<div class="form-check form-switch form-switch-md ms-3" dir="ltr">
+                                            <input type="checkbox" class="form-check-input" name="enable_variant[${key}]" id="${key}">
+                                            <label class="form-check-label" for=""></label>
+                                        </div>
                                     `;
-                        html += `<div class="form-group d-flex justify-content-between align-items-center">
+                        html += `
+                                <div class="form-group d-flex justify-content-between align-items-center mt-3">
                                     <label style="width:100px" for="">${value.attribute_name}</label>
-                                    <select style="width: 520px;" data-name="${value.attribute_name}" name="attribute_value[${key}][]" id="attribute_value_select-${key}" class="form-control select2 attribute_value_select" 
+                                    <select style="width: 450px;" data-name="${value.attribute_name}" name="attribute_value[${key}][]" id="attribute_value_select-${key}"
+                                        class="form-control select2 attribute_value_select" 
                                         multiple="" tabindex="1" aria-hidden="false" 
-                                        aria-placeholder="Choose class shipping">`;
+                                    aria-placeholder="Choose class shipping">`;
 
                         $.each(value.attribute_values, function (id, name) {
                             html += `<option value="${id}">${name}</option>`;
@@ -141,6 +141,8 @@ $(document).ready(function () {
                 if (response.attribute_values.attribute_variant != "") {
                     toastr.success("Lưu thuộc tính thành công");
                     $("#generateProductVariant").removeAttr("style");
+                    $("#generateProductVariant").addClass("btn-primary");
+
                     $("#generateProductVariant").on("click", function () {
                         // console.log(response.attribute_values.attribute_variant);
                         let variants = generateProductVariant(response.attribute_values.attribute_variant);
@@ -152,83 +154,85 @@ $(document).ready(function () {
                             let stock = $("input[name='stock']").val();
                             let low_stock_amount = $("input[name='low_stock_amount']").val();
 
-                            xhtml += `  <div class="d-flex align-items-center" style="    background: #5d62f10d; margin-top:15px; padding: 0px 16px">
-                                            <div class="accordion" style="margin: 0px;">
-                                                <div class="collapsed d-flex justify-content-between align-items-center" role="button" data-toggle="collapse" data-target="#panel-body-${key}" aria-expanded="false" style="background: #5d62f10d padding:0px; margin-top: 8px;margin-right: 50px; ">
-                                                    <p>${value}</p>
-                                                    <div>
-                                                        <span>Số lượng: </span>
-                                                        <p>Giá sản phẩm:</p>
-                                                    </div>
-                                                </div>
-                                                <div  style="border-top: 1px solid #ccc"></div>
-                                                <div class="accordion-body collapse" id="panel-body-${key}" data-parent="#accordion">
-                                                    <div class="form-group">
-                                                        <label>Hình ảnh</label>
-                                                        <input type="file" class="form-control image_variant" name="image_variant[]" />
-                                                    </div>
-                                                    <div class="image-variant-preview-area"></div>
+                            xhtml += `
+                          
+<div class="accordion accordion-flush mt-3" id="default-accordion-example">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-heading-${value}">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${key}" aria-expanded="true" aria-controls="collapse-${key}">
+               #${key + 1}  <b class="ms-3 text-primary" style="ms-3">${value}</b>
+            </button>
+        </h2>
+        <div id="collapse-${key}" class="accordion-collapse collapse" aria-labelledby="flush-heading-${key}" data-bs-parent="#default-accordion-example">
+            <div class="accordion-body" id="panel-body-${key}">
+                <div class="form-group">
+                    <label>Hình ảnh</label>
+                    <input type="file" class="form-control image_variant" name="image_variant[]" />
+                </div>
+                <div class="image-variant-preview-area"></div>
 
-                                                    <div class="form-group">
-                                                        <label>Hình ảnh</label>
-                                                        <input class="form-control album_variant" name="album_variant[${key}][]" multiple  type="file" data-id=${key} />
-                                                    </div>
+                <div class="form-group">
+                    <label>Hình ảnh</label>
+                    <input class="form-control album_variant" name="album_variant[${key}][]" multiple  type="file" data-id=${key} />
+                </div>
 
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="">Giá bán</label>
-                                                                <input type="text" class="form-control" name="price[]" value=${price}>
-                                                            </div>
-                                                        </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Giá bán</label>
+                            <input type="text" class="form-control" name="price[]" value=${price}>
+                        </div>
+                    </div>
 
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="">Giá sale</label>
-                                                                <input type="text" class="form-control" placeholder="Nhập giá so sánh với giá vốn" name="sale_price[]" value="${priceSale}">
-                                                            </div>
-                                                        </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Giá sale</label>
+                            <input type="text" class="form-control" placeholder="Nhập giá so sánh với giá vốn" name="sale_price[]" value="${priceSale}">
+                        </div>
+                    </div>
 
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="">Giá vốn</label>
-                                                                <input type="text" class="form-control" name="cost_price[]" value="${priceCost}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Giá vốn</label>
+                            <input type="text" class="form-control" name="cost_price[]" value="${priceCost}">
+                        </div>
+                    </div>
+                </div>
 
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="">Sku</label>
-                                                                <input type="text" class="form-control" name="sku[]">
-                                                            </div>
-                                                        </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Sku</label>
+                            <input type="text" class="form-control" name="sku[]">
+                        </div>
+                    </div>
 
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="">Số lượng</label>
-                                                                <input type="text" class="form-control" name="stock[]" value="${stock}">
-                                                            </div>
-                                                        </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Số lượng</label>
+                            <input type="text" class="form-control" name="stock[]" value="${stock}">
+                        </div>
+                    </div>
 
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="">Số lượng ngưỡng</label>
-                                                                <input type="text" class="form-control" name="low_stock_amount[]" value"${low_stock_amount}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Số lượng ngưỡng</label>
+                            <input type="text" class="form-control" name="low_stock_amount[]" value"${low_stock_amount}">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                                                </div>
-                                            </div>
-
-                                            <div >
-                                                <a class="btn btn-outline-danger delete_item" href="product/">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </a>
-                                            </div>
-                                        </div>`;
+            <div >
+                <a class="btn btn-outline-danger delete_item" href="product/">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+            </div>
+        </div>
+        </div>
+    
+</div>
+                             `;
                         });
                         $("#accordion").html(xhtml);
                     });

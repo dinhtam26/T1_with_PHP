@@ -16,6 +16,8 @@
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= ADMIN_URL ?>assets/images/favicon.ico" />
+    <!-- Select 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
 
     <!-- dropzone css -->
     <link rel="stylesheet" href="<?= ADMIN_URL ?>assets/libs/dropzone/dropzone.css" type="text/css" />
@@ -154,6 +156,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="<?= ADMIN_URL ?>assets/js/pages/datatables.init.js"></script>
+
+    <!-- Form -->
+    <script src="<?= ADMIN_URL ?>assets/js/pages/form-input-spin.init.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="<?= ADMIN_URL ?>assets/js/pages/select2.init.js"></script>
 
     <!-- Customer -->
     <script src="<?= ADMIN_URL ?>assets/js/customer/main.js"></script>
