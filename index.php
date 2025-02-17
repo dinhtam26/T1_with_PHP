@@ -97,6 +97,7 @@ Route::put("/admin/productCatalogue/changeStatusIsFeature/{id}", [ProductCatalog
 
 // Attribute
 Route::get("/admin/attribute", [AttributeController::class, 'index'], ['auth', 'admin']);
+Route::get("/admin/getAttributeValue/{id}", [AttributeController::class, 'getAttributeValueByIdAttribute'], ['auth', 'admin']);
 Route::get("/admin/attribute/create", [AttributeController::class, 'create'], ['auth', 'admin']);
 Route::post("/admin/attribute/create", [AttributeController::class, 'store'], ['auth', 'admin']);
 Route::get("/admin/attribute/{id}/edit", [AttributeController::class, 'edit'], ['auth', 'admin']);

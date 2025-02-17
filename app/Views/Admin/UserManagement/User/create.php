@@ -22,8 +22,6 @@
                 <a href="http://localhost/magento-ecommerce/admin/user" class="btn btn-light">Back</a>
             </div>
             <div class="card-body">
-
-
                 <form name="form-submit" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <div class="d-flex">

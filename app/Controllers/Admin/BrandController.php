@@ -97,6 +97,7 @@ class BrandController extends Controller
             Upload::deleteFileUpload("brands", $oldImage);
         }
         $brand['updated_at']  = Helper::dateTime();
+
         BrandModel::update($brand, $id);
         Session::setSession('success', 'Update Brand Successfully');
         Helper::redirect('admin/brand/' . $id . '/edit');

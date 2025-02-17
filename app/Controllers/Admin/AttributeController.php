@@ -22,6 +22,7 @@ class AttributeController extends Controller
     public function index()
     {
         $listAttributes = AttributeModel::all();
+        $this->setJs("admin/assets", "/customer/attribute/index");
         $this->view("Admin/Attribute/index", ['listAttributes' => $listAttributes]);
     }
 
@@ -170,6 +171,21 @@ class AttributeController extends Controller
             AttributeValueModel::delete($id);
             echo json_encode(['status' => 'success', 'message' => 'Deleted Successfully', 'id' => $id]);
         } catch (\Throwable $e) {
+            echo json_encode(['status' => 'error', 'message' => 'Something Wrong']);
+        }
+    }
+
+    public function getAttributeValueByIdAttribute($attributeId)
+    {
+        $attributeValue = $this->attributeValueModel->table('attribute_values')->select('name')->where('attribute_id', '=', $attributeId)->get();
+
+        try {
+            if ($attributeValue) {
+                echo json_encode(['status' => 'success', 'attributeValue' => $attributeValue]);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Attribute value not found'], 404);
+            }
+        } catch (\Throwable $th) {
             echo json_encode(['status' => 'error', 'message' => 'Something Wrong']);
         }
     }

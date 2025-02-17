@@ -1,6 +1,19 @@
-<section class="section-header">
-    <h1>Update Value <?= $attribute['code'] ?></h1>
-</section>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Chỉnh sửa giá trị của thuộc tính <span> <?= $attribute['name'] ?></span></h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript: void(0);">Quản lý thuộc tính</a>
+                    </li>
+                    <li class="breadcrumb-item active">Chỉnh sửa giá trị thuộc tính</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
 <section class="section-body">
     <div class="card">
         <div class="card-header">
@@ -15,10 +28,10 @@
                         <input type="text" class="form-control" name="name" placeholder="" value="<?= $attribute_value['name'] ?>">
                     </div>
 
-                    <div class="form-group m-4">
-                        <button class="btn btn-primary">Update</button>
-                    </div>
+                </div>
 
+                <div class="form-group mt-3">
+                    <button class="btn btn-primary">Update</button>
                 </div>
             </form>
 

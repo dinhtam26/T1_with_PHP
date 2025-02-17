@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(".custom-switch-input").on("change", function () {
+    $(".form-check-input").on("change", function () {
         // Cập nhật giá trị của checkbox hiện tại
         $(this).val($(this).prop("checked") ? "1" : "0");
         let value = $(this).val();
