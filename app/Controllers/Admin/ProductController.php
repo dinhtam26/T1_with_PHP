@@ -64,21 +64,23 @@ class ProductController extends Controller
     // Thêm sản phẩm
     public function store()
     {
+
         $rules = [
             'name'                 => 'required|string|min:2|max:255',
             'description'          => 'string',
             'brand_id'             => 'required',
             'product_catalogue_id' => 'required|numeric',
-            'image'                => 'image|max:3000',
-            'stock'                => 'required|integer',
-            'price'                => 'required|numeric',
-            'sale_price'           => 'numeric',
-            'cost_price'           => 'required|numeric',
+            // 'stock'                => 'required|integer',
+            // 'price'                => 'required|numeric',
+            // 'sale_price'           => 'numeric',
+            // 'cost_price'           => 'required|numeric',
         ];
 
-
         $validator = new Validate($this->request, $rules);
+
+
         if ($validator->validate() !== true) {
+
             $validator->getErrors();
             $this->view("Admin/ProductManagement/product/create", ['data' =>  $validator->getResults()]);
             return;
@@ -86,11 +88,11 @@ class ProductController extends Controller
 
 
 
-
         // Thêm product trước
         // Thêm product_attribute
         // Thêm product variant
         // Thêm product_variant_attribute
+        // dd($this->request);
         try {
             ProductModel::beginTransaction();
             $product = $this->createProduct($this->request);
@@ -222,14 +224,15 @@ class ProductController extends Controller
             $dataMain['cost_price']         = $request['cost_price'][$key];
             $dataMain['stock']              = $request['stock'][$key];
             $dataMain['low_stock_amount']   = $request['low_stock_amount'][$key];
-            $dataMain['weight']             = $request['weight'];
-            $dataMain['length']             = $request['length'];
-            $dataMain['width']              = $request['width'];
-            $dataMain['height']             = $request['height'];
+            $dataMain['weight']             = $request['weight'][$key];
+            $dataMain['length']             = $request['length'][$key];
+            $dataMain['width']              = $request['width'][$key];
+            $dataMain['height']             = $request['height'][$key];
             $dataMain['publish']            = 1;
             // Xử lý hình ảnh 
             $dataMain['image']              = $this->handleImage($request['image'], $request['image_variant'], $request['product_catalogue_id'], $key);
             $dataMain['album']              = $this->handleAlbum($request['album'], $request['album_variant'], $request['product_catalogue_id'], $key);
+
             $dataList[] = $dataMain;
         }
 

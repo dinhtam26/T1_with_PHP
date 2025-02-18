@@ -18,7 +18,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <form action="" method="post">
+        <form id="uploadForm" method="post" enctype="multipart/form-data">
             <div class="row">
                 <!-- Bên trái -->
                 <div class="col-lg-9">
@@ -298,6 +298,14 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="text-end  mf-5">
+                        <button type="submit" class="btn btn-primary " style="z-index: 1050; margin-top: 80px;">Lưu sản phẩm</button>
+                    </div>
+                </div>
+
 
         </form>
     </div>

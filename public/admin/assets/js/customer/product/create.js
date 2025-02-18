@@ -153,6 +153,10 @@ $(document).ready(function () {
                             let priceCost = $("input[name='cost_price']").val();
                             let stock = $("input[name='stock']").val();
                             let low_stock_amount = $("input[name='low_stock_amount']").val();
+                            let weight = $("input[name='weight']").val();
+                            let length = $("input[name='length']").val();
+                            let width = $("input[name='width']").val();
+                            let height = $("input[name='height']").val();
 
                             xhtml += `
                           
@@ -252,7 +256,7 @@ $(document).ready(function () {
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="">Số lượng ngưỡng</label>
-                                <input type="text" class="form-control" name="low_stock_amount[]" value"${low_stock_amount}">
+                                <input type="text" class="form-control" name="low_stock_amount[]" value="${low_stock_amount}">
                             </div>
                         </div>
                         
@@ -263,25 +267,25 @@ $(document).ready(function () {
                         <div class="col-3">
                             <div class="form-group">
                                 <label for="">Cân nặng (g)</label>
-                                <input type="text" class="form-control" name="weight[]" value"">
+                                <input type="text" class="form-control" name="weight[]" value="${weight}">
                             </div>
                         </div>
                         <div class="col-3">
                             <div class="form-group">
                                 <label for="">Dài (cm)</label>
-                                <input type="text" class="form-control" name="length[]" value"">
+                                <input type="text" class="form-control" name="length[]" value="${length}">
                             </div>
                         </div>
                         <div class="col-3">
                             <div class="form-group">
                                 <label for="">Rộng (cm)</label>
-                                <input type="text" class="form-control" name="width[]" value"">
+                                <input type="text" class="form-control" name="width[]" value="${width}">
                             </div>
                         </div>
                         <div class="col-3">
                             <div class="form-group">
                                 <label for="">Cao (cm)</label>
-                                <input type="text" class="form-control" name="height[]" value"">
+                                <input type="text" class="form-control" name="height[]" value="${height}">
                             </div>
                         </div>
                         

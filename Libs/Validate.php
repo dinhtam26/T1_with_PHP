@@ -107,9 +107,11 @@ class Validate
     /** Required */
     private function validateRequired($field)
     {
+
         if (empty($this->data[$field])) {
             $this->setError($field, "The $field is required");
         }
+
 
         // Kiểm tra file có rỗng không
         if (is_array($this->data[$field])) {
