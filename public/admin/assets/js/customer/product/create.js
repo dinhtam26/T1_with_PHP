@@ -165,64 +165,129 @@ $(document).ready(function () {
         </h2>
         <div id="collapse-${key}" class="accordion-collapse collapse" aria-labelledby="flush-heading-${key}" data-bs-parent="#default-accordion-example">
             <div class="accordion-body" id="panel-body-${key}">
-                <div class="form-group">
-                    <label>Hình ảnh</label>
-                    <input type="file" class="form-control image_variant" name="image_variant[]" />
-                </div>
-                <div class="image-variant-preview-area"></div>
-
-                <div class="form-group">
-                    <label>Hình ảnh</label>
-                    <input class="form-control album_variant" name="album_variant[${key}][]" multiple  type="file" data-id=${key} />
-                </div>
-
-                <div class="row">
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="">Giá bán</label>
-                            <input type="text" class="form-control" name="price[]" value=${price}>
+                   <p class="text-center text-primary mt-4">Ảnh chính sản phẩm</p>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group mt-3">
+                                <label for="imageInput${key + 3}">Ảnh mô tả sản phẩm ${key + 3}</label>
+                                <div class="d-flex">
+                                    <div class="file-upload-container">
+                                        <input type="file" name="image_variant[]" id="imageInput${key + 3}" data-preview="preview${key + 3}">
+                                        <label for="imageInput${key + 3}" class="file-upload-label">
+                                            <i class="fas fa-upload"></i>
+                                            <span>Ảnh mô tả sản phẩm</span>
+                                        </label>
+                                    </div>
+                                    <div style="margin-left:20px" id="preview${key + 3}"></div>
+                                </div>
                         </div>
-                    </div>
-
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="">Giá sale</label>
-                            <input type="text" class="form-control" placeholder="Nhập giá so sánh với giá vốn" name="sale_price[]" value="${priceSale}">
                         </div>
+                        
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="">Sku</label>
+                                <input type="text" class="form-control" name="sku[]">
+                            </div>
+                        </div>                          
                     </div>
-
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="">Giá vốn</label>
-                            <input type="text" class="form-control" name="cost_price[]" value="${priceCost}">
+                    
+                           
+                   <p class="text-center text-primary mt-4 p-1" style="border-top: 1px solid #ddd">Thư viện ảnh sản phẩm</p>
+                   <div class="row " >
+                        <div class="col-2">
+                            <span style="display:block;text-align:center"><b>Thư viện ảnh</b></span>
+                            <span style="text-align: center;display: inline-block;width: 100px;">
+                                (Mặc định sẽ lấy ảnh thư viện sản phẩm)
+                            </span>
                         </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="">Sku</label>
-                            <input type="text" class="form-control" name="sku[]">
+                        <div class="col-10">
+                            <div class="form-group mt-3">
+                                <label for="imageInput${key + 20}">Ảnh album sản phẩm ${key + 20}</label>
+                                <div class="d-flex">
+                                    <div class="file-upload-container">
+                                        <input type="file" name="album_variant[${key}][]" multiple  id="imageInput${key + 20}" data-preview="preview${
+                                key + 20
+                            }">
+                                        <label for="imageInput${key + 20}" class="file-upload-label">
+                                            <i class="fas fa-upload"></i>
+                                            <span>Ảnh mô tả sản phẩm</span>
+                                        </label>
+                                    </div>
+                                    <div style="margin-left:20px" id="preview${key + 20}"></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                   </div>
 
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="">Số lượng</label>
-                            <input type="text" class="form-control" name="stock[]" value="${stock}">
+                   <p class="text-center text-primary mt-4 p-1" style="border-top: 1px solid #ddd">Giá sản phẩm sản phẩm</p>
+                   <div class="row" >
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="">Giá bán</label>
+                                <input type="text" class="form-control" name="price[]" value=${price}>     
+                            </div>
                         </div>
-                    </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="">Giá sale</label>
+                                <input type="text" class="form-control" placeholder="Nhập giá so sánh với giá vốn" name="sale_price[]" value="${priceSale}">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                           <div class="form-group">
+                                <label for="">Giá vốn</label>
+                                <input type="text" class="form-control" name="cost_price[]" value="${priceCost}">
+                            </div>
+                        </div>
+                   </div>
 
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="">Số lượng ngưỡng</label>
-                            <input type="text" class="form-control" name="low_stock_amount[]" value"${low_stock_amount}">
+                   <p class="text-center text-primary mt-4 p-1" style="border-top: 1px solid #ddd">Kiểm kê kho hàng</p>
+                   <div class="row " >
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="">Số lượng</label>
+                                <input type="text" class="form-control" name="stock[]" value="${stock}">
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="">Số lượng ngưỡng</label>
+                                <input type="text" class="form-control" name="low_stock_amount[]" value"${low_stock_amount}">
+                            </div>
+                        </div>
+                        
+                   </div>
+
+                   <p class="text-center text-primary mt-4 p-1" style="border-top: 1px solid #ddd">Giao hàng</p>
+                   <div class="row " >
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="">Cân nặng (g)</label>
+                                <input type="text" class="form-control" name="weight[]" value"">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="">Dài (cm)</label>
+                                <input type="text" class="form-control" name="length[]" value"">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="">Rộng (cm)</label>
+                                <input type="text" class="form-control" name="width[]" value"">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="">Cao (cm)</label>
+                                <input type="text" class="form-control" name="height[]" value"">
+                            </div>
+                        </div>
+                        
+                   </div>
             </div>
-
+        </div>
             <div >
                 <a class="btn btn-outline-danger delete_item" href="product/">
                     <i class="fa-solid fa-trash"></i>

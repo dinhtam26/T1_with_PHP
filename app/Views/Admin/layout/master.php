@@ -137,7 +137,7 @@
     <!-- App js -->
     <script src="<?= ADMIN_URL ?>assets/js/app.js"></script>
 
-    <script src="/magento-ecommerce/public/include/js/upload.js"></script>
+
 
     <!-- Toastr Js -->
     <script src="/magento-ecommerce/public/include/js/toastr.min.js"></script>
@@ -165,6 +165,7 @@
     <!-- Customer -->
     <script src="<?= ADMIN_URL ?>assets/js/customer/main.js"></script>
     <script src="<?= $this->js ?? "" ?>"></script>
+    <script src="/magento-ecommerce/public/include/js/upload.js"></script>
 
     <script>
         toastr.options = {

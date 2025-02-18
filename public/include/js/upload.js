@@ -1,56 +1,59 @@
 $(document).ready(function () {
-    const selectedFiles = new Map(); // Lưu trữ các file đã chọn
+    const selectedFilesMap = new Map(); // Lưu trữ file đã chọn cho từng input
 
-    $("#imageInput").on("change", function (event) {
+    $(document).on("change", "input[type='file']", function (event) {
         const files = event.target.files;
-        const isMultiple = $(this).attr("multiple") !== undefined; // Kiểm tra có thuộc tính multiple hay không
+        const inputId = $(this).attr("id"); // Lấy id của input hiện tại
+        const previewId = $(this).data("preview"); // Lấy id của vùng preview tương ứng
+        const previewContainer = $("#" + previewId); // Tìm vùng preview đúng
+        const isMultiple = $(this).attr("multiple") !== undefined; // Kiểm tra multiple
 
-        if (files.length > 0) {
-            // Nếu không có multiple, xóa các ảnh cũ
-            if (!isMultiple) {
-                $("#preview").empty();
-                selectedFiles.clear();
-            }
+        if (!selectedFilesMap.has(inputId)) {
+            selectedFilesMap.set(inputId, new Map()); // Nếu chưa có, tạo Map riêng cho input này
+        }
+        const selectedFiles = selectedFilesMap.get(inputId); // Lấy danh sách file của input này
 
-            Array.from(files).forEach((file) => {
-                if (file.type.startsWith("image/") && !selectedFiles.has(file.name)) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const imgContainer = $(`
-                            <div class="image-container">
-                                <img src="${e.target.result}" alt="Preview">
-                                <button class="delete-btn">×</button>
-                            </div>
-                        `);
-
-                        // Xử lý nút xóa
-                        imgContainer.find(".delete-btn").on("click", function () {
-                            selectedFiles.delete(file.name); // Xóa file khỏi Map
-                            imgContainer.remove(); // Xóa ảnh khỏi giao diện
-                            syncInputFiles(); // Đồng bộ lại input
-                        });
-
-                        $("#preview").append(imgContainer);
-                        selectedFiles.set(file.name, file); // Thêm file vào Map
-                        syncInputFiles(); // Đồng bộ lại input
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
+        if (!isMultiple) {
+            previewContainer.empty();
+            selectedFiles.clear();
         }
 
-        // Reset input để có thể chọn lại cùng file
-        $(this).val("");
+        Array.from(files).forEach((file) => {
+            if (file.type.startsWith("image/") && !selectedFiles.has(file.name)) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgContainer = $(`
+                        <div class="image-container">
+                            <img src="${e.target.result}" alt="Preview">
+                            <button class="delete-btn">×</button>
+                        </div>
+                    `);
+
+                    // Xử lý nút xóa
+                    imgContainer.find(".delete-btn").on("click", function () {
+                        selectedFiles.delete(file.name);
+                        imgContainer.remove();
+                        syncInputFiles(inputId);
+                    });
+
+                    previewContainer.append(imgContainer);
+                    selectedFiles.set(file.name, file);
+                    syncInputFiles(inputId);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $(this).val(""); // Reset input để có thể chọn lại cùng file
     });
 
-    function syncInputFiles() {
-        // Tạo DataTransfer để quản lý danh sách tệp gửi đi
+    function syncInputFiles(inputId) {
         const dataTransfer = new DataTransfer();
+        const selectedFiles = selectedFilesMap.get(inputId);
         selectedFiles.forEach((file) => {
             dataTransfer.items.add(file);
         });
 
-        // Gán danh sách file mới cho input
-        $("#imageInput")[0].files = dataTransfer.files;
+        $("#" + inputId)[0].files = dataTransfer.files;
     }
 });
