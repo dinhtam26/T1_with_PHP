@@ -103,7 +103,7 @@ trait QueryBuilder
     /** orderBy */
     public function orderBy($column, $type = 'DESC')
     {
-        $this->orderBy = " ORDER BY `$column` $type";
+        $this->orderBy = " ORDER BY $column $type";
         return $this;
     }
 

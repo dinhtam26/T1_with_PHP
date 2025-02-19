@@ -33,7 +33,84 @@ class ProductController extends Controller
     // Danh sách sản phẩm
     public function index()
     {
-        $this->view("Admin/ProductManagement/Product/index");
+        $products = $this->getProducts();
+
+        $this->view("Admin/ProductManagement/Product/index", ['products' => $products]);
+    }
+
+    private function getProducts()
+    {
+        $products =  $this->productModel->table('products')
+            ->select([
+                'brands.name AS brand_name',
+                'product_catalogues.name AS product_catalogue_name',
+                'products.name AS product_name',
+                'products.type AS product_type',
+                'products.id AS product_id',
+                'products.publish AS publish',
+                'product_variants.*',
+                '(SELECT SUM(stock) FROM product_variants WHERE product_variants.product_id = products.id) AS total_stock'
+            ])
+            ->join('brands', 'products.brand_id = brands.id')
+            ->join('product_catalogues', 'products.product_catalogue_id = product_catalogues.id')
+            ->join('product_variants', 'product_variants.product_id = products.id')
+            ->orderBy("products.id")
+            ->get();
+
+
+        $groupedProducts = [];
+
+        foreach ($products as $product) {
+            $productId = $product->product_id;
+
+            if (!isset($groupedProducts[$productId])) {
+                // Lưu thông tin chung của sản phẩm
+                $groupedProducts[$productId] = [
+                    'product_id' => $product->product_id,
+                    'brand_name' => $product->brand_name,
+                    'product_catalogue_name' => $product->product_catalogue_name,
+                    'product_name' => $product->product_name,
+                    'product_type' => $product->product_type,
+                    'publish'       => $product->publish,
+                    'total_stock' => 0, // Tính tổng stock của tất cả biến thể
+                    'product_variants' => [],
+                ];
+            }
+
+            // Cộng dồn tổng stock của sản phẩm
+            $groupedProducts[$productId]['total_stock'] += $product->stock;
+
+            // Thêm biến thể vào mảng
+            $groupedProducts[$productId]['product_variants'][] = [
+                'id' => $product->id,
+                'uuid' => $product->uuid,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'sku' => $product->sku,
+                'price' => $product->price,
+                'sale_price' => $product->sale_price,
+                'cost_price' => $product->cost_price,
+                'stock' => $product->stock,
+                'low_stock_amount' => $product->low_stock_amount,
+                'image' => $product->image,
+                'album' => json_decode($product->album), // Chuyển album từ JSON string sang mảng
+                'weight' => $product->weight,
+                'length' => $product->length,
+                'width' => $product->width,
+                'height' => $product->height,
+                'publish' => $product->publish,
+                'is_discount_time' => $product->is_discount_time,
+                'sale_price_start_at' => $product->sale_price_start_at,
+                'sale_price_end_at' => $product->sale_price_end_at,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at,
+            ];
+        }
+
+        // Chuyển về dạng danh sách thay vì sử dụng index theo `product_id`
+        $groupedProducts = array_values($groupedProducts);
+
+        return $groupedProducts;
     }
 
     // View thêm sản phẩm
